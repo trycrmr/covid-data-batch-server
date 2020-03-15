@@ -16,13 +16,13 @@ exports.gatherAllRegions = () => {
 
       data[regionName] = regionData;
       data[regionName].recoveryRate =
-        (parseInt(
+        Math.ceil((parseInt(
           data[regionName].regionTotal.recovered.replace(",", "")
         ) /
           parseInt(
             data[regionName].regionTotal.cases.replace(",", "")
           )) *
-        100;
+        100);
     });
 
     return {
