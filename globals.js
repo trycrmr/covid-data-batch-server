@@ -97,6 +97,7 @@ exports.countryLists = {
 };
 
 exports.AlternativeLabelNames = {
+  "Bosnia": "Bosnia and Herzegovina",
   "Czech Republic": "Czechia",
   "United States": "USA"
 }
