@@ -100,10 +100,11 @@ exports.getGreaterValue = (value1, value2) => {
   return value1 >= value2 ? value1.toLocaleString() : value2.toLocaleString();
 };
 
-exports.syncTwoRegions = (regions1, regions2) => {
+exports.syncTwoRegions = (regions1, regions2, shouldSyncTotal) => {
   regions1.map((country1, country1Index) => {
     regions2.map((country2, country2Index) => {
       if (country1.country !== country2.country) return;
+
       const countryName = country1.country;
       const country1Data = country1;
       const country2Data = country2;

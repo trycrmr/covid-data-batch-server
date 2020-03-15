@@ -94,8 +94,12 @@ exports.countryLists = {
     "Sweden",
     "United Kingdom"
   ]
-
 };
+
+exports.AlternativeLabelNames = {
+  "Czech Republic": "Czechia",
+  "United States": "USA"
+}
 
 exports.regionStructure = {
   regionName: "",
