@@ -162,7 +162,11 @@
                   <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
                   <td>
-                    <span class="text--gray"><%= data[region].regions[i].country %></span>
+                    <% if (data[region].regions[i].country == "USA") { %>
+                      <span class="text--gray">United States</span>
+                    <% } else { %>
+                      <span class="text--gray"><%= data[region].regions[i].country %></span>
+                    <% } %>
                   </td>
 
                   <td>
