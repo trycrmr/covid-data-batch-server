@@ -28,14 +28,17 @@ exports.fetchAllData = async () => {
       coronatrackerScraper
         .getSelectedCountries("Europe", globals.countryLists["Europe"])
         .then(europeanData => {
-          europeanData.regions,
-            (allData["Global"].regions = utilities.syncTwoRegions(
-              europeanData.regions,
-              allData["Global"].regions
-            ));
 
-          europeanData.regionTotal = utilities.calculateRegionTotal(
-            europeanData.regions
+          allData["Europe"] = europeanData;
+
+          allData["Europe"].regions,
+            allData["Global"].regions = utilities.syncTwoRegions(
+              allData["Europe"].regions,
+              allData["Global"].regions
+            );
+
+          allData["Europe"].regionTotal = utilities.calculateRegionTotal(
+            allData["Europe"].regions
           );
           allData["Global"].regionTotal = utilities.calculateRegionTotal(
             allData["Global"].regions
@@ -84,8 +87,21 @@ const gatherAllOverrides = (allData) => {
         allData[region].regionTotal = utilities.calculateRegionTotal(
           data[region].regions
         );
+    })
 
-        utilities.writeJSONFile(region, allData[region]);
+    // Sync the Global USA value with the Region value.
+    // Region will be the correct one because it is has two sources.
+    allData["Global"].regions.map((region, index) => {
+      if(region.country === "USA") {
+        allData["Global"].regions[index].cases = allData["USA"].regionTotal.cases,
+        allData["Global"].regions[index].deaths = allData["USA"].regionTotal.deaths,
+        allData["Global"].regions[index].serious = allData["USA"].regionTotal.serious,
+        allData["Global"].regions[index].recovered = allData["USA"].regionTotal.recovered
+      }
+    })
+
+    Object.keys(data).map(region => {
+      utilities.writeJSONFile(region, allData[region]);
     })
   });
 };
