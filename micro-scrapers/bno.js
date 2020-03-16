@@ -103,7 +103,7 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
 
-  if (sheetName === "LatinAmerica" && !sortedData.regions) {
+  if (sheetName === "LatinAmerica" && !!sortedData.regions) {
     sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
   }
 
@@ -116,6 +116,7 @@ const extractCountryFromRegion = (country, region, data) => {
       return region.country;
     })
     .indexOf(country);
+
   const targetCountry = data.regions[targetCountryIndex];
   data.regionTotal = {
     ...data.regionTotal,

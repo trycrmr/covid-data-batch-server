@@ -65,7 +65,7 @@ exports.convertAllKeysToString = object => {
   return object;
 };
 
-exports.calculateRegionTotal = regions => {
+exports.calculateRegionTotal = regions => {  
   let regionTotalTemplate = { ...globals.countryStructure };
   let allConfirmed = [];
   let allDeaths = [];
