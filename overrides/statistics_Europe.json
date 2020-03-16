@@ -1,277 +1,236 @@
 {
   "regionName": "Europe",
-  "regions": [
-    {
-      "country": "Italy",
-      "cases": "17,660",
-      "deaths": "1,266",
-      "recovered": "1,439",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Spain",
-      "cases": "5,232",
-      "deaths": "133",
-      "recovered": "193",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Germany",
-      "cases": "3,675",
-      "deaths": "8",
-      "recovered": "46",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "France",
-      "cases": "3,661",
-      "deaths": "79",
-      "recovered": "12",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Sweden",
-      "cases": "814",
-      "deaths": "1",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Netherlands",
-      "cases": "804",
-      "deaths": "10",
-      "recovered": "2",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Denmark",
-      "cases": "801",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "United Kingdom",
-      "cases": "798",
-      "deaths": "11",
-      "recovered": "18",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Belgium",
-      "cases": "559",
-      "deaths": "3",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Austria",
-      "cases": "504",
-      "deaths": "1",
-      "recovered": "6",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Greece",
-      "cases": "190",
-      "deaths": "1",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Finland",
-      "cases": "155",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Slovenia",
-      "cases": "141",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Czechia",
-      "cases": "141",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Portugal",
-      "cases": "112",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Ireland",
-      "cases": "90",
-      "deaths": "1",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Romania",
-      "cases": "89",
-      "deaths": "0",
-      "recovered": "7",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "San Marino",
-      "cases": "80",
-      "deaths": "5",
-      "recovered": "2",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Estonia",
-      "cases": "79",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Poland",
-      "cases": "68",
-      "deaths": "2",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Serbia",
-      "cases": "35",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Luxembourg",
-      "cases": "34",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Albania",
-      "cases": "33",
-      "deaths": "1",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Croatia",
-      "cases": "32",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Slovakia",
-      "cases": "32",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Belarus",
-      "cases": "27",
-      "deaths": "0",
-      "recovered": "3",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Bulgaria",
-      "cases": "23",
-      "deaths": "1",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Hungary",
-      "cases": "19",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Latvia",
-      "cases": "17",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Cyprus",
-      "cases": "14",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Bosnia and Herzegovina",
-      "cases": "13",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Malta",
-      "cases": "12",
-      "deaths": "0",
-      "recovered": "1",
-      "serious": "-",
-      "critical": "-"
-    },
-    {
-      "country": "Lithuania",
-      "cases": "6",
-      "deaths": "0",
-      "recovered": "0",
-      "serious": "-",
-      "critical": "-"
-    }
-  ],
+  "regions": [{
+    "country": "Italy",
+    "cases": "24,747",
+    "deaths": "1,809",
+    "serious": "1,672",
+    "recovered": "2,335",
+    "critical": "0"
+  }, {
+    "country": "Spain",
+    "cases": "7,847",
+    "deaths": "292",
+    "serious": "272",
+    "recovered": "517",
+    "critical": "0"
+  }, {
+    "country": "Germany",
+    "cases": "5,813",
+    "deaths": "13",
+    "serious": "0",
+    "recovered": "46",
+    "critical": "2"
+  }, {
+    "country": "France",
+    "cases": "5,423",
+    "deaths": "127",
+    "serious": "300",
+    "recovered": "12",
+    "critical": "0"
+  }, {
+    "country": "United Kingdom",
+    "cases": "1,391",
+    "deaths": "35",
+    "serious": "20",
+    "recovered": "20",
+    "critical": "0"
+  }, {
+    "country": "Netherlands",
+    "cases": "1,135",
+    "deaths": "20",
+    "serious": "0",
+    "recovered": "2",
+    "critical": "45"
+  }, {
+    "country": "Sweden",
+    "cases": "1,032",
+    "deaths": "3",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Belgium",
+    "cases": "886",
+    "deaths": "4",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Denmark",
+    "cases": "864",
+    "deaths": "2",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Austria",
+    "cases": "860",
+    "deaths": "1",
+    "serious": "0",
+    "recovered": "6",
+    "critical": "0"
+  }, {
+    "country": "Greece",
+    "cases": "331",
+    "deaths": "4",
+    "serious": "5",
+    "recovered": "8",
+    "critical": "0"
+  }, {
+    "country": "Czechia",
+    "cases": "253",
+    "deaths": "0",
+    "serious": "2",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Portugal",
+    "cases": "245",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "2",
+    "critical": "0"
+  }, {
+    "country": "Finland",
+    "cases": "244",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "10",
+    "critical": "0"
+  }, {
+    "country": "Slovenia",
+    "cases": "219",
+    "deaths": "1",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Estonia",
+    "cases": "171",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Romania",
+    "cases": "139",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "9",
+    "critical": "0"
+  }, {
+    "country": "Ireland",
+    "cases": "169",
+    "deaths": "2",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Poland",
+    "cases": "125",
+    "deaths": "3",
+    "serious": "2",
+    "recovered": "13",
+    "critical": "0"
+  }, {
+    "country": "San Marino",
+    "cases": "109",
+    "deaths": "7",
+    "serious": "10",
+    "recovered": "4",
+    "critical": "0"
+  }, {
+    "country": "Luxembourg",
+    "cases": "77",
+    "deaths": "1",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Slovakia",
+    "cases": "61",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Bulgaria",
+    "cases": "51",
+    "deaths": "2",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Croatia",
+    "cases": "49",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "2",
+    "critical": "0"
+  }, {
+    "country": "Serbia",
+    "cases": "48",
+    "deaths": "0",
+    "serious": "1",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Albania",
+    "cases": "42",
+    "deaths": "1",
+    "serious": "2",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Cyprus",
+    "cases": "33",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Hungary",
+    "cases": "32",
+    "deaths": "1",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Latvia",
+    "cases": "30",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "1",
+    "critical": "0"
+  }, {
+    "country": "Belarus",
+    "cases": "27",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "3",
+    "critical": "0"
+  }, {
+    "country": "Bosnia and Herzegovina",
+    "cases": "24",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "0",
+    "critical": "0"
+  }, {
+    "country": "Malta",
+    "cases": "21",
+    "deaths": "0",
+    "serious": "0",
+    "recovered": "2",
+    "critical": "0"
+  }],
   "regionTotal": {
     "country": "TOTAL",
-    "cases": "35,950",
-    "deaths": "1,523",
-    "recovered": "1,737",
-    "serious": "-",
-    "critical": "-"
+    "cases": "52,504",
+    "deaths": "2,328",
+    "recovered": "2,998",
+    "serious": "2,286",
+    "critical": "47"
   }
 }
