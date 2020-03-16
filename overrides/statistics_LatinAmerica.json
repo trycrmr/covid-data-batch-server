@@ -154,11 +154,11 @@
   "regionTotal": {
     "index": "21",
     "country": "TOTAL",
-    "cases": "5,507",
-    "deaths": "135",
-    "serious": "2",
+    "cases": "0",
+    "deaths": "0",
+    "serious": "0",
     "critical": "0",
-    "recovered": "4",
+    "recovered": "0",
     "mystery": ""
   },
   "regionName": "LatinAmerica",
