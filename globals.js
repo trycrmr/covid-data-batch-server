@@ -97,9 +97,12 @@ exports.countryLists = {
 };
 
 exports.AlternativeLabelNames = {
-  "Bosnia": "Bosnia and Herzegovina",
-  "Czech Republic": "Czechia",
-  "United States": "USA"
+  "Bosnia and Herzegovina": "Bosnia",
+  "Brasil": "Brazil",
+  "Czechia": "Czech Republic",
+  "México": "Mexico",
+  "Panamá": "Panama",
+  "Rep. Dominicana": "Dominican Republic"
 }
 
 exports.regionStructure = {
