@@ -96,7 +96,6 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
   if (sheetName === "LatinAmerica" && !!sortedData.regions) {
     sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
   }
-
   return sortedData;
 };
 
