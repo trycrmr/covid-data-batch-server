@@ -78,16 +78,6 @@ const trimWhitespaceOnKeys = data => {
   return data;
 };
 
-const renameCountryLabels = (data) => {
-  data.map((country, index) => {
-    if (!!globals.AlternativeLabelNames[country.country]) {
-      data[index].country = globals.AlternativeLabelNames[country.country]
-    }
-  })
-
-  return data;
-}
-
 const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
   const sanitiziedData = removeEmptyRows(data);
   const rowOrder = [startKey, totalKey];
@@ -99,7 +89,7 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
     })
   };
   trimWhitespaceOnKeys(sortedData);
-  sortedData.regions = renameCountryLabels(sortedData.regions)
+  sortedData.regions = utilities.renameCountryLabels(sortedData.regions)
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
 

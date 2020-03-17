@@ -65,7 +65,7 @@ exports.convertAllKeysToString = object => {
   return object;
 };
 
-exports.calculateRegionTotal = regions => {  
+exports.calculateRegionTotal = regions => {
   let regionTotalTemplate = { ...globals.countryStructure };
   let allConfirmed = [];
   let allDeaths = [];
@@ -123,4 +123,13 @@ exports.syncTwoRegions = (regions1, regions2) => {
   });
 
   return regions1, regions2;
+};
+
+exports.renameCountryLabels = regions => {
+  regions.map((country, index) => {
+    if (!!globals.AlternativeLabelNames[country.country]) {
+      regions[index].country = globals.AlternativeLabelNames[country.country];
+    }
+  });
+  return regions;
 };

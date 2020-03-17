@@ -15,7 +15,7 @@ exports.getSelectedCountries = (region, countries) => {
     const allCountries = data.data;
     const filteredCountries = filterCountries(allCountries, countries);
 
-    return generateRegionalData(region, filteredCountries)
+    return generateRegionalData(region, filteredCountries);
   });
 };
 
@@ -23,18 +23,17 @@ const filterCountries = (allCountries, countries) => {
   const filteredCountries = allCountries.filter(country => {
     return countries.includes(country.countryName);
   });
-  return filteredCountries.map(country =>
-    utilities.convertAllKeysToString(utilities.remapKeys(country, keyMapping))
-  );
+  return filteredCountries.map((country) => {
+    return utilities.convertAllKeysToString(utilities.remapKeys(country, keyMapping));
+  });
 };
 
 const generateRegionalData = (region, filteredCountries) => {
   let regionTemplate = { ...globals.regionStructure };
   regionTemplate.regionName = region;
-  regionTemplate.regions = filteredCountries;
+  regionTemplate.regions = utilities.renameCountryLabels(filteredCountries);
   regionTemplate.regionTotal = utilities.convertAllKeysToString(
     utilities.calculateRegionTotal(regionTemplate.regions)
   );
-
   return regionTemplate;
 };

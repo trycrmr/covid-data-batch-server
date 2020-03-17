@@ -21,6 +21,13 @@ exports.fetchAllData = async () => {
       data.map(
         resolvedRegion => (allData[resolvedRegion.regionName] = resolvedRegion)
       );
+
+      allData["LatinAmerica"].regions,
+        allData["Global"].regions = utilities.syncTwoRegions(
+          allData["LatinAmerica"].regions,
+          allData["Global"].regions
+        );
+
     })
     .then(() => {
 
@@ -36,13 +43,6 @@ exports.fetchAllData = async () => {
               allData["Europe"].regions,
               allData["Global"].regions
             );
-
-          allData["Europe"].regionTotal = utilities.calculateRegionTotal(
-            allData["Europe"].regions
-          );
-          allData["Global"].regionTotal = utilities.calculateRegionTotal(
-            allData["Global"].regions
-          );
         })
         .then(() => {
 
@@ -89,10 +89,10 @@ const gatherAllOverrides = (allData) => {
         );
     })
 
-    // Sync the Global USA value with the Region value.
+    // Sync the Global United States value with the Region value.
     // Region will be the correct one because it is has two sources.
     allData["Global"].regions.map((region, index) => {
-      if(region.country === "USA") {
+      if(region.country === "United States") {
         allData["Global"].regions[index].cases = allData["USA"].regionTotal.cases,
         allData["Global"].regions[index].deaths = allData["USA"].regionTotal.deaths,
         allData["Global"].regions[index].serious = allData["USA"].regionTotal.serious,
