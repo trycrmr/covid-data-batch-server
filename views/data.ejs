@@ -361,7 +361,7 @@
       var $dropdownLabel = $('.dropdown-toggle');
       var $tableLegend = $('.mobile-nav-legend').first();
       var topPoistion = (region) => {
-        return $('#container_' + region).offset().top - 100
+        return $('#container_' + region).offset().top - 150
       }
       var showRegionTotal = (region) => {
         $dropdownLabel.text(region);
@@ -385,6 +385,7 @@
 
           var className = $selector.hasClass('sorting_desc') ? 'sorted-column--desc' : 'sorted-column--asc'
           $(this).find('.legend-label').addClass(className)
+          $(window).scrollTop(topPoistion(region) + 1);
         })
       }
 
