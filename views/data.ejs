@@ -19,13 +19,58 @@
           <% }) %>
         </div>
       </div>
+
+      <div class="mobile-nav-legend sort-copy">
+        <div class="mobile-nav-legend-label name">
+          <span class="legend-label">Sort by:&nbsp;&nbsp;&nbsp;</span>
+        </div>
+      </div>
+
+      <% data.displayOrder.forEach(function(region, index){ %>
+
+      <div id="mobile-nav-legend_<%= region %>" class="mobile-nav-legend">
+        <div data-region="<%= region %>" data-action="name" class="cateogry_sort mobile-nav-legend-item">
+          <span class="legend-marker name">&#8226;</span>
+          <span class="legend-label">Name</span>
+        </div>
+        <div class="mobile-nav-legend-items">
+          <div data-region="<%= region %>" data-action="confirmed" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker confirmed">&#8226;</span>
+            <span class="legend-label sorted-column--desc">Cases</span>
+          </div>
+          <div data-region="<%= region %>" data-action="confirmed" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker deceased">&#8226;</span>
+            <span class="legend-label">Deaths</span>
+          </div>
+          <div data-region="<%= region %>" data-action="confirmed" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker recovered">&#8226;</span>
+            <span class="legend-label">Recovered</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="mobile-nav-total_<%= region %>" class="mobile-nav-legend totals">
+        <div class="mobile-nav-legend-label name">
+          <span class="legend-label">TOTAL&nbsp;&nbsp;&nbsp;</span>
+        </div>
+
+        <div class="mobile-nav-legend-items">
+          <div class="mobile-nav-legend-item">
+            <span class="legend-label confirmed"><%= data[region].regionTotal.cases %></span>
+          </div>
+          <div class="mobile-nav-legend-item">
+            <span class="legend-label deceased"><%= data[region].regionTotal.deaths %></span>
+          </div>
+          <div class="mobile-nav-legend-item">
+            <span class="legend-label recovered"><%= data[region].regionTotal.recovered %> (<%= data[region].recoveryRate %>%)</span>
+          </div>
+        </div>
+      </div>
+      <% }) %>
     </div>
   </nav>
   <div class="content container-fluid">
-
     <div class="row">
-
-
       <div class="col col-lg-3">
         <span id="QuickFacts" class="mobile-dropdown-anchor"></span>
         <div class="container--wrap">
@@ -92,11 +137,10 @@
         </div>
       </div>
 
-      <div class="col col-lg-9">
+      <div class="col col-lg-9 tables">
         <div class="row m-0">
-
           <% data.displayOrder.forEach(function(region, index){ %>
-          <div class="container--wrap col">
+          <div id="container_<%= data.displayOrder[index] %>" class="container--wrap col">
             <div class="sorted-table__header">
               <span id="<%= data.displayOrder[index] %>" class="mobile-dropdown-anchor"></span>
 
@@ -121,41 +165,31 @@
             <table id="sortable_table_<%= region %>" class="display compact responsive">
               <thead>
                 <tr>
-                  <th class="text--gray">Region</th>
-                  <th class="text--gray">Confirmed</th>
-                  <th class="text--gray">Deceased</th>
-                  <th class="text--gray hide--desktop">Recovered</th>
-                  <th class="text--gray hide--desktop">Serious</th>
-                </tr>
-              </thead>
-              <thead class="total_row">
-                <tr>
-                  <th>
-                    <span class="text--gray">TOTAL</span>
-                  </th>
-                  <th class="text--center">
-                    <% if ( (data[region].regionTotal.cases !== '') && (data[region].regionTotal.cases !==  '-') ) { %>
-                    <span class="text--green"><%= data[region].regionTotal.cases %></span>
-                    <% } %>
-                  </th>
-                  <th class="text--center">
-                    <% if ( (data[region].regionTotal.deaths !== '') && (data[region].regionTotal.deaths !==  '-') ) { %>
-                    <span class="text--red"><%= data[region].regionTotal.deaths %></span>
-                    <% } %>
-                  </th>
-                  <th class="text--center hide--desktop">
-                    <% if ( (data[region].regionTotal.recovered !== '') && (data[region].regionTotal.recovered !==  '-') ) { %>
-                    <span class="text--blue"><%= data[region].regionTotal.recovered %></span>
-                    <% } %>
-                  </th>
-                  <th class="text--center hide--desktop">
-                    <% if ( (data[region].regionTotal.serious !== '') && (data[region].regionTotal.serious !==  '-') ) { %>
-                    <span class="text--yellow"><%= data[region].regionTotal.serious %></span>
-                    <% } %>
-                  </th>
+                  <th class="text--gray" data-action="name">Name</th>
+                  <th class="text--gray" data-action="confirmed">Confirmed</th>
+                  <th class="text--gray" data-action="deaths">Deceased</th>
+                  <th class="text--gray" data-action="recovered">Recovered</th>
+                  <th class="text--gray" data-action="serious">Serious</th>
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td>
+                    <span class="text--gray">TOTAL</span>
+                  </td>
+                  <td class="text--center">
+                    <span class="text--green"><%= data[region].regionTotal.cases %></span>
+                  </td>
+                  <td class="text--center">
+                    <span class="text--red"><%= data[region].regionTotal.deaths %></span>
+                  </td>
+                  <td class="text--center">
+                    <span class="text--blue"><%= data[region].regionTotal.recovered %></span>
+                  </td>
+                  <td class="hide-mobile">
+                    <span class="text--yellow"><%= data[region].regionTotal.serious %></span>
+                  </td>
+                </tr>
                 <% for( let i = 0; i < data[region].regions.length; i++ ) { %>
                 <% if (data[region].regions[i].country != "Wuhan") { %>
                 <% if (data[region].regions[i].country != "Queue") { %>
@@ -196,14 +230,12 @@
                   </td>
                   <td>
                     <% if ( (data[region].regions[i].recovered !== '') && (data[region].regions[i].recovered !==  '-') ) { %>
-                    <span class="text--blue hide--desktop"><%= data[region].regions[i].recovered %></span>
+                    <span class="text--blue"><%= data[region].regions[i].recovered %></span>
                     <% } %>
                   </td>
 
-                  <td>
-                    <% if ( (data[region].regions[i].serious !== '') && (data[region].regions[i].serious !==  '-') ) { %>
-                    <span class="text--yellow hide--desktop"><%= data[region].regions[i].serious %></span>
-                    <% } %>
+                  <td class="hide-mobile">
+                    <span class="text--yellow"><%= data[region].regions[i].serious %></span>
                   </td>
                 </tr>
                 <% } %>
@@ -232,59 +264,8 @@
   <%- include('./partials/scripts'); -%>
 
   <script>
-    var displayOrder = [
-      "Global",
-      "USA",
-      "Europe",
-      "China",
-      "Canada",
-      "Australia",
-      "LatinAmerica"
-    ]
-
-    var $dropdownLabel = $('.dropdown-toggle');
-    $(window).scroll(function() {
-      var topPoistion = $(document).scrollTop()
-
-      if ($(document).scrollTop() > 60) {
-        $('nav.fixed-top').css({'margin-top': '0'});
-      }
-
-      if (topPoistion > 3780) {
-        $dropdownLabel.text(displayOrder[6]);
-      }
-      else if (topPoistion > 3310) {
-        $dropdownLabel.text(displayOrder[5]);
-      }
-      else if (topPoistion > 2760) {
-        $dropdownLabel.text(displayOrder[4]);
-      }
-      else if (topPoistion > 2330) {
-        $dropdownLabel.text(displayOrder[3]);
-      }
-      else if (topPoistion > 1785) {
-        $dropdownLabel.text(displayOrder[2]);
-      }
-      else if (topPoistion > 1252) {
-        $dropdownLabel.text(displayOrder[1]);
-      }
-      else if (topPoistion > 712) {
-        $dropdownLabel.text(displayOrder[0]);
-      }
-      else if (topPoistion > 60) {
-        $('nav.fixed-top').css({'margin-top': '0'});
-      }
-      else {
-        $dropdownLabel.text('Jump to Region');
-        $('nav.fixed-top').css({
-          'margin-top': '50px'
-        });
-      }
-    });
-  </script>
-
-  <script>
-    const config = {
+    const mobileBreakpoint = 980;
+    let config = {
       responsive: {
         details: false
       },
@@ -308,24 +289,54 @@
           className: "text--center",
           "targets": [1, 2, 3, 4]
         }
+      ]
+    }
+
+    const mobileConfig = {
+      responsive: {
+        details: false
+      },
+      "ordering": true,
+      "scrollCollapse": true,
+      "language": {
+        "search": "&#128269;",
+        "searchPlaceholder": "search data"
+      },
+      "autoWidth": true,
+      "bInfo": false,
+      "bPaginate": false,
+      "order": [
+        [1, "desc"]
+      ],
+      "columnDefs": [{
+          width: 50,
+          targets: 0
+        },
+        {
+          className: "text--center",
+          "targets": [1, 2, 3, 4]
+        }
       ],
       "columns": [{
-          "width": '30%'
+          "width": "50px"
         },
-        {
-          "width": "17.5%"
-        },
-        {
-          "width": "17.5%"
-        },
-
-        {
-          "width": "17.5%"
-        },
-        {
-          "width": "17.5%"
-        }
+        {},
+        {},
+        {}
       ]
+    }
+
+    $('window').resize(()=> {
+      if (window.innerWidth <= mobileBreakpoint) {
+        $('th[data-action="serious"]').hide()
+      } else {
+        $('th[data-action="serious"]').show()
+      }
+    })
+
+    if (window.innerWidth <= mobileBreakpoint) {
+      $('th[data-action="serious"]').hide()
+      config = mobileConfig;
     }
 
     $(document).ready(function() {
@@ -336,8 +347,99 @@
       $('#sortable_table_Australia').DataTable(config);
       $('#sortable_table_LatinAmerica').DataTable(config);
       $('#sortable_table_Europe').DataTable(config);
+
+      var displayOrder = [
+        "QuickFacts",
+        "Global",
+        "USA",
+        "Europe",
+        "China",
+        "Canada",
+        "Australia",
+        "LatinAmerica"
+      ]
+      var $dropdownLabel = $('.dropdown-toggle');
+      var $tableLegend = $('.mobile-nav-legend').first();
+      var topPoistion = (region) => {
+        return $('#container_' + region).offset().top - 150
+      }
+      var showRegionTotal = (region) => {
+        $dropdownLabel.text(region);
+        $('.show-element').removeClass('show-element')
+
+        $('.sort-copy').addClass('show-element')
+        $('#mobile-nav-legend_' + region).addClass('show-element')
+        $('#mobile-nav-total_' + region).addClass('show-element')
+      }
+
+      var handleCategorySort = function() {
+        $('.cateogry_sort').on('click', function() {
+          var action = $(this).data('action');
+          var region = $(this).data('region');
+          var $mobileTab = $(this).parents().find('#mobile-nav-legend_' + region)
+          var $selector = $("#sortable_table_" + region + " [data-action='" + action + "']")
+
+          $mobileTab.find('.sorted-column--desc').removeClass('sorted-column--desc');
+          $mobileTab.find('.sorted-column--asc').removeClass('sorted-column--asc');
+          $selector.click()
+
+          var className = $selector.hasClass('sorting_desc') ? 'sorted-column--desc' : 'sorted-column--asc'
+          $(this).find('.legend-label').addClass(className)
+          $(window).scrollTop(topPoistion(region) + 1);
+        })
+      }
+
+      handleCategorySort();
+
+      if (!!window.scrollY) {
+        $('nav.fixed-top').css({
+          'margin-top': '0'
+        });
+      }
+
+      $(window).scroll(function() {
+        var scrollPosition = $(document).scrollTop()
+
+        // Fix the Dropdwn Nav after main header scrolls.
+        if ($(document).scrollTop() > 60) {
+          $('nav.fixed-top').css({
+            'margin-top': '0'
+          });
+        }
+
+        // Toggle the Legend and Totals in Dropdown Nav depending on
+        // which Region is currently in the viewport.
+        if (scrollPosition > topPoistion(displayOrder[7])) {
+          showRegionTotal(displayOrder[7])
+        } else if (scrollPosition > topPoistion(displayOrder[6])) {
+          showRegionTotal(displayOrder[6])
+        } else if (scrollPosition > topPoistion(displayOrder[5])) {
+          showRegionTotal(displayOrder[5])
+        } else if (scrollPosition > topPoistion(displayOrder[4])) {
+          showRegionTotal(displayOrder[4])
+        } else if (scrollPosition > topPoistion(displayOrder[3])) {
+          showRegionTotal(displayOrder[3])
+        } else if (scrollPosition > topPoistion(displayOrder[2])) {
+          showRegionTotal(displayOrder[2])
+        } else if (scrollPosition > topPoistion(displayOrder[1])) {
+          showRegionTotal(displayOrder[1])
+        } else if (scrollPosition > 60) {
+          $('.show-element').removeClass('show-element')
+          $('nav.fixed-top').css({
+            'margin-top': '0'
+          });
+        } else {
+          $('.show-element').removeClass('show-element')
+          $dropdownLabel.text('Jump to Region');
+
+          $('nav.fixed-top').css({
+            'margin-top': '50px'
+          });
+        }
+      });
     });
   </script>
+
 </body>
 
 </html>
