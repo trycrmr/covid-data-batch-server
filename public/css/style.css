@@ -382,12 +382,11 @@ tr:last-child {
   display: block;
 }
 
-.hide--mobile {
-  display: none;
-}
-
 @media only screen and (max-width: 980px) {
   .hide--desktop {
+    display: none;
+  }
+  .hide-mobile {
     display: none;
   }
 }

@@ -234,7 +234,7 @@
                     <% } %>
                   </td>
 
-                  <td class=" hide-mobile">
+                  <td class="hide-mobile">
                     <span class="text--yellow"><%= data[region].regions[i].serious %></span>
                   </td>
                 </tr>
@@ -275,7 +275,7 @@
         "search": "&#128269;",
         "searchPlaceholder": "search data"
       },
-      "autoWidth": false,
+      "autoWidth": true,
       "bInfo": false,
       "bPaginate": false,
       "order": [
@@ -326,7 +326,18 @@
       ]
     }
 
-    if (window.innerWidth <= mobileBreakpoint) config = mobileConfig;
+    $('window').resize(()=> {
+      if (window.innerWidth <= mobileBreakpoint) {
+        $('th[data-action="serious"]').hide()
+      } else {
+        $('th[data-action="serious"]').show()
+      }
+    })
+
+    if (window.innerWidth <= mobileBreakpoint) {
+      $('th[data-action="serious"]').hide()
+      config = mobileConfig;
+    }
 
     $(document).ready(function() {
       $('#sortable_table_Global').DataTable(config);
