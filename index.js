@@ -9,13 +9,13 @@ const globals = require("./globals");
 const graphData = require("./tmp/statistics_graph.json");
 
 // Fetch data every minute.
-cron.schedule("* * * * *", () => {
-  try {
-    stats.fetchAllData();
-  } catch(error) {
-    console.error(error)
-  }
-});
+// cron.schedule("* * * * *", () => {
+//   try {
+//     stats.fetchAllData();
+//   } catch(error) {
+//     console.error(error)
+//   }
+// });
 
 const getContent = async (res, view) => {
   await sync.gatherAllRegions().then(data => {
@@ -34,6 +34,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
+app.get('*', (req, res) => res.send('Sorry we are down for scaling. We will be back soon.'))
+
 app.get("/", (req, res) => getContent(res, "data"));
 app.get("/about", (req, res) => res.render("about"));
 app.get("/data", (req, res) => getContent(res, "data"));
@@ -51,7 +53,5 @@ app.get("/email", (req, res) => res.render("email"));
 
 app.get("/graphs", (req, res) => res.render("graphs"));
 
-stats.fetchAllData().then(data => {
-  app.listen(process.env.PORT || 3000);
-  console.log("Listening on port: " + 3000);
-});
+app.listen(process.env.PORT || 3000);
+console.log("Listening on port: " + 3000);
