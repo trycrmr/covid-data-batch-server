@@ -18,6 +18,10 @@ exports.gatherAllRegions = () => {
       console.log(regionData.regionName);
 
       data[regionName] = regionData;
+
+      //console.log(data[regionName].regionTotal);
+
+
       data[regionName].recoveryRate =
         Math.ceil((parseInt(
           data[regionName].regionTotal.recovered.replace(",", "")

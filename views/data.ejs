@@ -212,6 +212,7 @@
                     <% } else { %>
                     <% if ( (data[region].regions[i].cases !== '') && (data[region].regions[i].cases !==  '-') ) { %>
                     <span class="text--green"><%= data[region].regions[i].cases %></span>
+                    <span class="text--green">(<%= data[region].regions[i].todayCases %>)</span>
                     <% } %>
                     <% } %>
                   </td>
@@ -397,7 +398,8 @@
         {
           className: "text--center",
           "targets": [1, 2, 3, 4]
-        }
+        },
+        { type: 'natural-desc', targets: [1] }
       ]
     }
 

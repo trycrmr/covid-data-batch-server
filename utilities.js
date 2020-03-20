@@ -50,13 +50,13 @@ exports.writeJSONFile = (region, data) => {
   }
 };
 
-exports.remapKeys = (country, keyMapping) => {
+exports.remapKeys = (country, keyMapping, show=false) => {
   let remappedCountry = { ...globals.countryStructure };
-
   Object.keys(keyMapping).map(key => {
     remappedCountry[key] = country[keyMapping[key]];
   });
 
+  if (show) console.log(country);
   return remappedCountry;
 };
 
@@ -118,8 +118,11 @@ exports.syncTwoRegions = (regions1, regions2) => {
         deaths: this.getGreaterValue(country1.deaths, country2.deaths),
         serious: this.getGreaterValue(country1.serious, country2.serious),
         recovered: this.getGreaterValue(country1.recovered, country2.recovered),
-        critical: this.getGreaterValue(country1.critical, country2.critical)
+        critical: this.getGreaterValue(country1.critical, country2.critical),
+        todayCases: this.getGreaterValue(country1.todayCases, country2.todayCases),
+        todayDeaths: this.getGreaterValue(country1.todayDeaths, country2.todayDeaths)
       };
+
 
       regions1[country1Index] = syncRegionData;
       regions2[country2Index] = syncRegionData;

@@ -2,6 +2,7 @@ const globals = require("./globals");
 const utilities = require("./utilities");
 const bnoScraper = require("./micro-scrapers/bno");
 const cnnScraper = require("./micro-scrapers/cnn");
+const novelcovid = require("./micro-scrapers/novelcovid");
 const coronatrackerScraper = require("./micro-scrapers/coronatracker");
 const fs = require("fs");
 
@@ -71,6 +72,19 @@ exports.fetchAllData = async () => {
     });
 };
 
+const syncWithAllCountryList = (allData) => {
+  return novelcovid.fetchData().then(novelData => {
+    Object.keys(allData).map(region => {
+      allData[region].regions,
+        (novelData = utilities.syncTwoRegions(
+          allData[region].regions,
+          novelData
+        ));
+      });
+      return allData
+  })
+}
+
 const gatherAllOverrides = (allData) => {
   return Promise.all(
     Object.keys(allData).map(region =>
@@ -108,9 +122,15 @@ const gatherAllOverrides = (allData) => {
       }
     })
 
-    Object.keys(data).map(region => {
-      console.log(`[SYNC] Successful: ${region} - Saved.`);
-      utilities.writeJSONFile(region, allData[region]);
-    })
+    syncWithAllCountryList(allData).then(()=> {
+      Object.keys(data).map(region => {
+        console.log(`[SYNC] Successful: ${region} - Saved.`);
+        utilities.writeJSONFile(region, allData[region]);
+      })
+    });
+
+    // Object.keys(data).map(region => {
+    //   utilities.writeJSONFile(region, allData[region]);
+    // })
   });
 };

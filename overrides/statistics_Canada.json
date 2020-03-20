@@ -1,1 +1,137 @@
+<<<<<<< HEAD
 {"regions":[{"country":"British Columbia","cases":"271","deaths":"8","serious":"0","recovered":"6","critical":"7"},{"country":"Ontario","cases":"258","deaths":"2","serious":"0","recovered":"5","critical":"0"},{"country":"Alberta","cases":"146","deaths":"1","serious":"0","recovered":"0","critical":"0"},{"country":"Quebec","cases":"121","deaths":"1","serious":"0","recovered":"1","critical":"0"},{"country":"Manitoba","cases":"17","deaths":"2","serious":"0","recovered":"0","critical":"0"},{"country":"Nova Scotia","cases":"14","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Saskatchewan","cases":"20","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"New Brunswick","cases":"11","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Newfoundland & Labrador","cases":"3","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Prince Edward Island","cases":"2","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Northwest Territories","cases":"0","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Nunavut","cases":"0","deaths":"0","serious":"0","recovered":"0","critical":"0"},{"country":"Yukon","cases":"0","deaths":"0","serious":"0","recovered":"0","critical":"0"}],"regionTotal":{"country":"TOTAL","cases":"863","deaths":"14","recovered":"12","serious":"0","critical":"7"},"regionName":"Canada","lastUpdated":"2020-03-20T12:14:10-05:00"}
+=======
+{
+  "regions": [{
+    "country": "British Columbia",
+    "cases": "271",
+    "deaths": "",
+    "recovered": "6",
+    "serious": "",
+    "critical": "7",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Ontario",
+    "cases": "258",
+    "deaths": "",
+    "recovered": "5",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Alberta",
+    "cases": "146",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Quebec",
+    "cases": "121",
+    "deaths": "",
+    "recovered": "1",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Manitoba",
+    "cases": "17",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Nova Scotia",
+    "cases": "14",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Saskatchewan",
+    "cases": "20",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "New Brunswick",
+    "cases": "11",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Newfoundland & Labrador",
+    "cases": "3",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Prince Edward Island",
+    "cases": "2",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Northwest Territories",
+    "cases": "0",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Nunavut",
+    "cases": "0",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }, {
+    "country": "Yukon",
+    "cases": "0",
+    "deaths": "",
+    "recovered": "",
+    "serious": "",
+    "critical": "",
+    "todayCases": "",
+    "todayDeaths": ""
+  }],
+  "regionTotal": {
+    "index ": "19",
+    "country ": "TOTAL",
+    "cases ": "863",
+    "deaths ": "12",
+    "serious ": "0",
+    "critical ": "7",
+    "recovered ": "12",
+    "mystery ": "",
+    "field9": ""
+  },
+  "regionName": "Canada",
+  "lastUpdated": "2020-03-19T20:59:04-05:00"
+}
+>>>>>>> First pass at getting daily case counts
