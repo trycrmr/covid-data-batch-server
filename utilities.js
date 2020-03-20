@@ -14,7 +14,7 @@ exports.getCSVPath = region => {
 };
 
 exports.getExternalCSV = region => {
-  return `https://docs.google.com/spreadsheets/d/1Hz1BO2cGOba0a8WstvMBpjPquSCCWo3u48R7zatx_A0/gviz/tq?tqx=out:csv&sheet=${region}`;
+  return `https://docs.google.com/spreadsheets/d/12Wi7QBVQ-s_5SaXlK9QwTZ9PMR_kYnBZVveCyF3kgfs/gviz/tq?tqx=out:csv&sheet=${region}`;
 };
 
 exports.addAllNumbers = numbers => {
