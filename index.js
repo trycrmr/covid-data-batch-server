@@ -8,18 +8,8 @@ const time = require("./getTime");
 const globals = require("./globals");
 const graphData = require("./tmp/statistics_graph.json");
 
-//Fetch data every minute.
-cron.schedule("* * * * *", () => {
-  try {
-    stats.fetchAllData();
-  } catch(error) {
-    console.error(error)
-  }
-});
-
 const getContent = (res, view) => {
   sync.gatherAllRegions().then(data => {
-    console.log(Object.keys(data));
     res.render(view, {
       data: {
         ...data,
@@ -48,8 +38,6 @@ app.get("/wiki", (req, res) => res.render("coronainfo"));
 app.get("/travel", (req, res) => res.render("travel"));
 app.get("/press", (req, res) => res.render("press"));
 app.get("/email", (req, res) => res.render("email"));
-
-
 
 app.get("/graphs", (req, res) => res.render("graphs"));
 
