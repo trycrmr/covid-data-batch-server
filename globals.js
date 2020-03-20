@@ -1,7 +1,7 @@
 exports.allRegions = [{
     name: "World",
     sheetName: "Global",
-    startKey: "OTHER PLACES",
+    startKey: "WORLD",
     totalKey: "TOTAL",
     scraper: "bno"
   },
