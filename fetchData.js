@@ -17,6 +17,8 @@ exports.fetchAllData = async () => {
     Promise.all(bnoRegions)
     .then(data => {
 
+      console.log(data);
+
       // Gather BNO data as base.
       data.map(
         resolvedRegion => {
