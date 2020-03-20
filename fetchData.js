@@ -20,13 +20,12 @@ exports.fetchAllData = async () => {
       // Gather BNO data as base.
       data.map(
         resolvedRegion => {
+          if(!resolvedRegion || !resolvedRegion.regionName) {
+              return Promise.reject("Couldn't fetch data.");
+          }
           allData[resolvedRegion.regionName] = resolvedRegion
         }
       );
-
-      if(Object.keys(allData).indexOf('undefined') >= 0) {
-        return Promise.reject("Couldn't fetch data.");
-      }
 
       if(Object.keys(allData).indexOf('undefined') >= 0) {
         return Promise.reject("Couldn't fetch data.");
