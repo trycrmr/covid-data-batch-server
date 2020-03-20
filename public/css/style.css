@@ -43,6 +43,7 @@ table.dataTable.compact tbody td {
 }
 
 table.dataTable.no-footer { border: 0;}
+
 table.dataTable.display tbody tr.odd:first-of-type,
 table.dataTable.display tbody tr:first-of-type {
   font-weight: bolder;
@@ -150,10 +151,9 @@ table.dataTable.display tbody tr:first-of-type {
 
 .mobile-dropdown-anchor {
   position: relative;
-  bottom: 120px;
+  bottom: 200px;
   height: 0;
   overflow: hidden;
-  background: red:
 }
 
 .container--wrap {
@@ -382,9 +382,13 @@ tr:last-child {
   display: block;
 }
 
+.hide-desktop {
+  display: none;
+}
+
 @media only screen and (max-width: 980px) {
-  .hide--desktop {
-    display: none;
+  .hide-desktop {
+    display: inline-block;
   }
   .hide-mobile {
     display: none;
@@ -523,7 +527,7 @@ table.dataTable.compact thead.total_row th {
 .dataTables_filter {
   position: absolute;
   right: 5px;
-  top: -35px;
+  top: -40px;
 }
 
 @media only screen and (max-width: 980px) {
@@ -591,6 +595,11 @@ table.dataTable.compact thead.total_row th {
 }
 
 @media only screen and (max-width: 980px) {
+  table.dataTable.display tbody tr.odd:first-of-type,
+  table.dataTable.display tbody tr:first-of-type {
+    font-weight: normal;
+  }
+
   thead {
     visibility: hidden;
   }
