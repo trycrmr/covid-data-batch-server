@@ -14,6 +14,9 @@ exports.gatherAllRegions = () => {
       const regionData = JSON.parse(region);
       const regionName = regionData.regionName;
 
+      console.log(regionData.regions.length);
+      console.log(regionData.regionName);
+
       data[regionName] = regionData;
       data[regionName].recoveryRate =
         Math.ceil((parseInt(
