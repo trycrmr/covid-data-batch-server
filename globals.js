@@ -83,6 +83,7 @@ exports.countryLists = {
     "Luxembourg",
     "Malta",
     "Netherlands",
+    "Norway",
     "Poland",
     "Portugal",
     "Romania",
@@ -92,6 +93,7 @@ exports.countryLists = {
     "Slovenia",
     "Spain",
     "Sweden",
+    "Switzerland",
     "United Kingdom"
   ]
 };
