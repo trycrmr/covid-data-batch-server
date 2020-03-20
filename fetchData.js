@@ -19,8 +19,20 @@ exports.fetchAllData = async () => {
 
       // Gather BNO data as base.
       data.map(
-        resolvedRegion => (allData[resolvedRegion.regionName] = resolvedRegion)
+        resolvedRegion => {
+          allData[resolvedRegion.regionName] = resolvedRegion
+        }
       );
+
+      if(Object.keys(allData).indexOf('undefined') >= 0) {
+        return Promise.reject("Couldn't fetch data.");
+      }
+
+      if(Object.keys(allData).indexOf('undefined') >= 0) {
+        return Promise.reject("Couldn't fetch data.");
+      }
+
+      console.log('[SYNC] Fetching all BNO data.');
 
       allData["LatinAmerica"].regions,
         allData["Global"].regions = utilities.syncTwoRegions(
@@ -99,6 +111,7 @@ const gatherAllOverrides = (allData) => {
     })
 
     Object.keys(data).map(region => {
+      console.log(`[SYNC] Successful: ${region} - Saved.`);
       utilities.writeJSONFile(region, allData[region]);
     })
   });

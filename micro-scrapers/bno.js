@@ -88,17 +88,22 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
       return element["country "] === totalKey;
     })
   };
+
   trimWhitespaceOnKeys(sortedData);
-  sortedData.regions = utilities.renameCountryLabels(sortedData.regions)
+  sortedData.regions = utilities.renameCountryLabels(sortedData.regions);
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
 
   sortedData.regions.map(region => {
-    region.serious = region.serious === "N/A" ? '0' : region.serious
-  })
+    region.serious = region.serious === "N/A" ? "0" : region.serious;
+  });
 
   if (sheetName === "LatinAmerica" && !!sortedData.regions) {
     sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
+  }
+
+  if (!sortedData.regionTotal || !sortedData.regions) {
+    sortedData = {}
   }
   return sortedData;
 };
