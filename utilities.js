@@ -38,7 +38,11 @@ exports.parseCommas = number => {
 };
 
 exports.writeJSONFile = (region, data) => {
-  if (!data.regions.length) return;
+  if (!!region.regions) {
+    if(!region.regions.length) {
+      return;
+    }
+  };
   try {
     fs.writeFileSync(this.getJSONPath(region), JSON.stringify(data));
   } catch (err) {
