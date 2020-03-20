@@ -10,7 +10,11 @@ const graphData = require("./tmp/statistics_graph.json");
 
 // Fetch data every minute.
 cron.schedule("* * * * *", () => {
-  stats.fetchAllData();
+  try {
+    stats.fetchAllData();
+  } catch(error) {
+    console.error(error)
+  }
 });
 
 const getContent = async (res, view) => {
@@ -18,7 +22,7 @@ const getContent = async (res, view) => {
     res.render(view, {
       data: {
         ...data,
-        lastUpdated: time.getTimeSinceLastUpdated(data.lastUpdated),
+        lastUpdated: time.getTimeSinceLastUpdated(data["Global"].lastUpdated),
         displayOrder: globals.displayOrder,
         graphs: graphData
     }
