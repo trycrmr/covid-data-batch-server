@@ -17,8 +17,8 @@ const graphData = require("./tmp/statistics_graph.json");
 //   }
 // });
 
-const getContent = async (res, view) => {
-  await sync.gatherAllRegions().then(data => {
+const getContent = (res, view) => {
+  sync.gatherAllRegions().then(data => {
     res.render(view, {
       data: {
         ...data,
@@ -27,14 +27,14 @@ const getContent = async (res, view) => {
         graphs: graphData
     }
     });
-  });
+  }).catch(error => {
+    console.error(error)
+  })
 };
 
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
-
-app.get('*', (req, res) => res.send('Sorry we are down for scaling. We will be back soon.'))
 
 app.get("/", (req, res) => getContent(res, "data"));
 app.get("/about", (req, res) => res.render("about"));
