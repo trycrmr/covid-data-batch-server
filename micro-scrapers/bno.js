@@ -93,6 +93,10 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
 
+  sortedData.regions.map(region => {
+    region.serious = region.serious === "N/A" ? '0' : region.serious
+  })
+
   if (sheetName === "LatinAmerica" && !!sortedData.regions) {
     sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
   }
