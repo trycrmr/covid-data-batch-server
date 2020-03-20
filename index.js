@@ -8,14 +8,14 @@ const time = require("./getTime");
 const globals = require("./globals");
 const graphData = require("./tmp/statistics_graph.json");
 
-// Fetch data every minute.
-// cron.schedule("* * * * *", () => {
-//   try {
-//     stats.fetchAllData();
-//   } catch(error) {
-//     console.error(error)
-//   }
-// });
+Fetch data every minute.
+cron.schedule("* * * * *", () => {
+  try {
+    stats.fetchAllData();
+  } catch(error) {
+    console.error(error)
+  }
+});
 
 const getContent = (res, view) => {
   sync.gatherAllRegions().then(data => {
