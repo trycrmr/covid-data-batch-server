@@ -36,21 +36,21 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => getContent(res, "data"));
-app.get("/about", (req, res) => res.render("about"));
+app.get("/about", (req, res) => getContent(res, "about"));
 app.get("/data", (req, res) => getContent(res, "data"));
-app.get("/faq", (req, res) => res.render("faq"));
-app.get("/map", (req, res) => res.render("map"));
-app.get("/preparation", (req, res) => res.render("prepping"));
-app.get("/prevention", (req, res) => res.render("prevention"));
-app.get("/tweets", (req, res) => res.render("tweets"));
-app.get("/wiki", (req, res) => res.render("coronainfo"));
-app.get("/travel", (req, res) => res.render("travel"));
-app.get("/press", (req, res) => res.render("press"));
-app.get("/email", (req, res) => res.render("email"));
+app.get("/faq", (req, res) => getContent(res, "faq"));
+app.get("/map", (req, res) => getContent(res, "map"));
+app.get("/preparation", (req, res) => getContent(res, "prepping"));
+app.get("/prevention", (req, res) => getContent(res, "prevention"));
+app.get("/tweets", (req, res) => getContent(res, "tweets"));
+app.get("/wiki", (req, res) => getContent(res, "coronainfo"));
+app.get("/travel", (req, res) => getContent(res, "travel"));
+app.get("/press", (req, res) => getContent(res, "press"));
+app.get("/email", (req, res) => getContent(res, "email"));
 
 
 
-app.get("/graphs", (req, res) => res.render("graphs"));
+app.get("/graphs", (req, res) => getContent(res, "graphs"));
 
 app.listen(process.env.PORT || 3000);
 console.log("Listening on port: " + 3000);
