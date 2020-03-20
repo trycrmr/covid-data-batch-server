@@ -8,7 +8,7 @@ const time = require("./getTime");
 const globals = require("./globals");
 const graphData = require("./tmp/statistics_graph.json");
 
-Fetch data every minute.
+//Fetch data every minute.
 cron.schedule("* * * * *", () => {
   try {
     stats.fetchAllData();
