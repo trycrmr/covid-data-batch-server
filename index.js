@@ -22,9 +22,8 @@ const getContent = (res, view) => {
     res.render(view, {
       data: {
         ...data,
-        lastUpdated: time.getTimeSinceLastUpdated(data["Global"].lastUpdated),
-        displayOrder: globals.displayOrder,
-        graphs: graphData
+        lastUpdated: 'a few seconds ago',
+        displayOrder: globals.displayOrder
     }
     });
   }).catch(error => {
