@@ -9,23 +9,20 @@ exports.fetchData = region => {
   return axios({
     method: "get",
     url: utilities.getExternalCSV(region.sheetName),
-    responseType: "stream"
+    responseType: "text"
   }).then(response => {
-    response.data.pipe(
-      fs.createWriteStream(utilities.getCSVPath(region.sheetName))
-    );
-    return csv()
-      .fromFile(utilities.getCSVPath(region.sheetName))
-      .then(json => {
-        return generatedRegionalData(
-          json,
-          region.startKey,
-          region.totalKey,
-          region.sheetName
-        );
-      });
+    return csv().fromString(response.data).then(json => {
+      return generatedRegionalData(
+        json,
+        region.startKey,
+        region.totalKey,
+        region.sheetName
+      )
+    }).catch(error=> {
+      console.error(error);
+    });
   });
-};
+}
 
 const removeEmptyRows = data => {
   return data.filter(row => !!row["country "]);
@@ -98,13 +95,6 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
     region.serious = region.serious === "N/A" ? "0" : region.serious;
   });
 
-  if (sheetName === "LatinAmerica" && !!sortedData.regions) {
-    sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
-  }
-
-  if (!sortedData.regionTotal || !sortedData.regions) {
-    sortedData = {}
-  }
   return sortedData;
 };
 

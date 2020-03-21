@@ -4,6 +4,8 @@ const stats = require("./fetchData");
 
 console.log("Scraper scheduled.");
 
+stats.fetchAllData();
+
 //Fetch data every minute.
 cron.schedule("*/2 * * * *", () => {
   try {
