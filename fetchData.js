@@ -13,11 +13,8 @@ exports.fetchAllData = async () => {
     })
     .map(region => bnoScraper.fetchData(region));
 
-    // TODO: Refactor. Some wacky promise behavior here.
     Promise.all(bnoRegions)
     .then(data => {
-
-      console.log(data);
 
       // Gather BNO data as base.
       data.map(

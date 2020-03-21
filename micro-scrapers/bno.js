@@ -4,7 +4,6 @@ const globals = require("../globals");
 const time = require("../getTime");
 const utilities = require("../utilities");
 const fs = require("fs");
-const parser = require("csv-parse");
 
 exports.fetchData = region => {
   return axios({
@@ -12,46 +11,18 @@ exports.fetchData = region => {
     url: utilities.getExternalCSV(region.sheetName),
     responseType: "text"
   }).then(response => {
-
-    try {
-    await fs.writeFile(utilities.getCSVPath(region.sheetName), response.data);
-
-    return csv()
-      .fromFile(utilities.getCSVPath(region.sheetName))
-      .then(json => {
-        return generatedRegionalData(
-          json,
-          region.startKey,
-          region.totalKey,
-          region.sheetName
-        );
-      });
-
-    console.info("File created successfully with Node.js v13 fs.promises!");
-
-    } catch (error){
-        console.error(error);
-    }
-    //
-    // return fs.writeFile(utilities.getCSVPath(region.sheetName), response.data, 'utf8', function (err) {
-    //   if (err) {
-    //     console.log('Some error occured - file either not saved or corrupted file saved.');
-    //   } else {
-    //
-    //     return csv()
-    //       .fromFile(utilities.getCSVPath(region.sheetName))
-    //       .then(json => {
-    //         return generatedRegionalData(
-    //           json,
-    //           region.startKey,
-    //           region.totalKey,
-    //           region.sheetName
-    //         );
-    //       });
-    //   }
-    // });
+    return csv().fromString(response.data).then(json => {
+      return generatedRegionalData(
+        json,
+        region.startKey,
+        region.totalKey,
+        region.sheetName
+      )
+    }).catch(error=> {
+      console.error(error);
+    });
   });
-};
+}
 
 const removeEmptyRows = data => {
   return data.filter(row => !!row["country "]);
@@ -124,14 +95,6 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
     region.serious = region.serious === "N/A" ? "0" : region.serious;
   });
 
-  if (sheetName === "LatinAmerica" && !!sortedData.regions) {
-    sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
-  }
-
-  if (!sortedData.regionTotal || !sortedData.regions) {
-    console.log('emptying the ', sheetName);
-    sortedData = {}
-  }
   return sortedData;
 };
 

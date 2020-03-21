@@ -11,7 +11,7 @@ exports.fetchData = () => {
       url: URL,
       responseType: "text"
     }).then(response => {
-      console.log("Graph ", response.data);
+      console.log(response.data);
         return utilities.writeJSONFile('graph', response.data)
     });
   };
