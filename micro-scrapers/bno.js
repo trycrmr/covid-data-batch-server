@@ -20,7 +20,6 @@ exports.fetchData = region => {
     url: utilities.getExternalCSV(region.sheetName),
     responseType: "text"
   }).then(response => {
-<<<<<<< HEAD
     return csv().fromString(response.data).then(json => {
       return generatedRegionalData(
         json,
@@ -31,28 +30,6 @@ exports.fetchData = region => {
     }).catch(error=> {
       console.error(error);
     });
-=======
-    response.data.pipe(
-      fs.createWriteStream(utilities.getCSVPath(region.sheetName))
-    );
-    return csv()
-      .fromFile(utilities.getCSVPath(region.sheetName))
-      .then(json => {
-
-        if(json.length === 1) {
-          return fs.promises.readFile(utilities.getJSONPath(region.sheetName)).then((data)=> {
-            return JSON.parse(data)
-          })
-        }
-
-        return generatedRegionalData(
-          json,
-          region.startKey,
-          region.totalKey,
-          region.sheetName
-        );
-      });
->>>>>>> First pass at getting daily case counts
   });
 }
 
@@ -82,46 +59,17 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
       return element["country "] === totalKey;
     })
   };
-
-<<<<<<< HEAD
-  trimWhitespaceOnKeys(sortedData);
-  sortedData.regions = utilities.renameCountryLabels(sortedData.regions);
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
-
-  sortedData.regions.map(region => {
-    region.serious = region.serious === "N/A" ? "0" : region.serious;
-  });
-
-=======
-  if(sheetName === "Global") {
-    //console.log(sortedData, sheetName);
-  }
-
-
-
+  sortedData.regionTotal = utilities.remapKeys(sortedData.regionTotal, keyMapping)
   sortedData.regions = sortedData.regions.map(region => {
     return utilities.remapKeys(region, keyMapping)
   })
   sortedData.regions = utilities.renameCountryLabels(sortedData.regions)
-  sortedData.regionName = sheetName;
-  sortedData.lastUpdated = time.setUpdatedTime();
+  sortedData.regions.map(region => {
+    region.serious = region.serious === "N/A" ? "0" : region.serious;
+  });
 
-  if (sheetName === "LatinAmerica" && !!sortedData.regions) {
-    sortedData = extractCountryFromRegion("España", "LatinAmerica", sortedData);
-  }
-
-  if(!sortedData.regionTotal) {
-    return fs.promises.readFile(utilities.getJSONPath(region.sheetName)).then((data)=> {
-      return JSON.parse(data)
-    })
-  }
-  console.log('before ', sheetName, sortedData.regionTotal);
-
-  sortedData.regionTotal = utilities.remapKeys(sortedData.regionTotal, keyMapping)
-
-  console.log('after ', sortedData.regionTotal);
->>>>>>> First pass at getting daily case counts
   return sortedData;
 };
 
