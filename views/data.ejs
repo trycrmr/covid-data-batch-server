@@ -419,16 +419,18 @@
         },
         {},
         {
-          render: function(data, type, row){
-            if(type==="display") return `${data} (${row[3]}%)`
+          render: (data, type, row)=> {
+            if(data=== "0") return '';
+            if(type==="display") return `&#8593; ${data} (${row[3]}%)`
             return data;
           }
         },
         {},
         {},
         {
-          render: function(data, type, row){
-            if(type==="display") return `${data} (${row[6]}%)`
+          render: (data, type, row)=> {
+            if(data=== "0") return '';
+            if(type==="display") return `&#8593; ${data} (${row[6]}%)`
             return data;
           }
         },

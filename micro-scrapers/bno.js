@@ -12,6 +12,8 @@ const keyMapping = {
   recovered: "recovered ",
   serious: "serious ",
   critical: "critical ",
+  new_cases: "todayCases",
+  new_deaths: "todayDeaths"
 };
 
 exports.fetchData = region => {
