@@ -26,6 +26,15 @@ exports.addAllNumbers = numbers => {
   return numbers.reduce((a, b) => a + b).toLocaleString();
 };
 
+exports.calculatePercentage = (total, amount, shouldRound = false) => {
+  let rate =
+    (parseInt(total.replace(",", "")) / parseInt(amount.replace(",", ""))) *
+    100;
+  rate = rate.toString();
+  rate = rate.slice(0, rate.indexOf(".") + 3);
+  return shouldRound ? Math.ceil(rate) : rate;
+};
+
 exports.subtractTwoValues = (value1, value2) => {
   return (
     this.parseCommas(value1) - (this.parseCommas(value2) || 0)
@@ -39,10 +48,10 @@ exports.parseCommas = number => {
 
 exports.writeJSONFile = (region, data) => {
   if (!!region.regions) {
-    if(!region.regions.length) {
+    if (!region.regions.length) {
       return;
     }
-  };
+  }
   try {
     fs.writeFileSync(this.getJSONPath(region), JSON.stringify(data));
   } catch (err) {
@@ -74,21 +83,24 @@ exports.calculateRegionTotal = regions => {
   let allDeaths = [];
   let allRecovered = [];
   let allSerious = [];
-  let allCritical = [];
+  let allTodayCases = [];
+  let allTodayDeaths = [];
 
   regions.map(region => {
     allConfirmed.push(region.cases);
     allDeaths.push(region.deaths);
     allRecovered.push(region.recovered);
     allSerious.push(region.serious);
-    allCritical.push(region.critical);
+    allTodayCases.push(region.todayCases);
+    allTodayDeaths.push(region.todayDeaths);
   });
 
   regionTotalTemplate.cases = this.addAllNumbers(allConfirmed);
   regionTotalTemplate.deaths = this.addAllNumbers(allDeaths);
   regionTotalTemplate.recovered = this.addAllNumbers(allRecovered);
   regionTotalTemplate.serious = this.addAllNumbers(allSerious);
-  regionTotalTemplate.critical = this.addAllNumbers(allCritical);
+  regionTotalTemplate.todayCases = this.addAllNumbers(allTodayCases);
+  regionTotalTemplate.todayDeaths = this.addAllNumbers(allTodayDeaths);
 
   return regionTotalTemplate;
 };
@@ -118,8 +130,14 @@ exports.syncTwoRegions = (regions1, regions2) => {
         serious: this.getGreaterValue(country1.serious, country2.serious),
         recovered: this.getGreaterValue(country1.recovered, country2.recovered),
         critical: this.getGreaterValue(country1.critical, country2.critical),
-        todayCases: this.getGreaterValue(country1.todayCases, country2.todayCases),
-        todayDeaths: this.getGreaterValue(country1.todayDeaths, country2.todayDeaths)
+        todayCases: this.getGreaterValue(
+          country1.todayCases,
+          country2.todayCases
+        ),
+        todayDeaths: this.getGreaterValue(
+          country1.todayDeaths,
+          country2.todayDeaths
+        )
       };
 
       regions1[country1Index] = syncRegionData;
