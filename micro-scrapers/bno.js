@@ -72,10 +72,9 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
     region.serious = region.serious === "N/A" ? "0" : region.serious;
   });
 
-  // TODO: Will re-add later.
-  // if(sheetName === "Global") {
-  //   sortedData = extractCountryFromRegion("Queue", "Global", sortedData)
-  // }
+  if(sheetName === "Global") {
+    sortedData = extractCountryFromRegion("Queue", "Global", sortedData)
+  }
 
   return sortedData;
 };

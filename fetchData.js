@@ -90,9 +90,12 @@ const syncWithAllCountryList = allData => {
 
       allData[region].regions = calculatePercentages(allData[region].regions);
 
-      allData[region].regionTotal = utilities.calculateRegionTotal(
-        allData[region].regions
-      );
+
+      if(region !== "Global") {
+        allData[region].regionTotal = utilities.calculateRegionTotal(
+          allData[region].regions
+        );
+      }
     });
     return allData;
   });
