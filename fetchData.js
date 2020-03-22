@@ -135,6 +135,8 @@ const gatherAllOverrides = allData => {
         }
       });
 
+      // TODO: Sync other Regions with Global data.
+
       Object.keys(data).map(region => {
         console.log(`[SYNC] Successful: ${region} - Saved.`);
         utilities.writeJSONFile(region, allSyncedData[region]);

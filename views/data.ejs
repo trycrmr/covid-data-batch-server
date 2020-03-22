@@ -446,7 +446,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(row[4]=== "0") return `${data}`
+            if(row[4] === 0) return `${data}`
             if(type==="display") return `${data} <br/> (&#8593; ${row[4]}%)`
             return data;
           }
@@ -512,6 +512,7 @@
           $selector.click()
 
           var className = $selector.hasClass('sorting_desc') ? 'sorted-column--desc' : 'sorted-column--asc'
+
           $(this).find('.legend-label').addClass(className)
           $(window).scrollTop(topPoistion(region) + 110);
         })
@@ -552,6 +553,7 @@
         } else if (scrollPosition > topPoistion(displayOrder[1])) {
           showRegionTotal(displayOrder[1])
         } else if (scrollPosition > 60) {
+          handleCategorySort();
           $('.show-element').removeClass('show-element')
           $('nav.fixed-top').css({
             'margin-top': '0'
