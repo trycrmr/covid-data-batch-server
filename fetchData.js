@@ -128,7 +128,8 @@ const gatherAllOverrides = allData => {
           (allSyncedData["USA"].recoveryRate = utilities.calculatePercentage(
             allSyncedData["USA"].regionTotal.recovered,
             allSyncedData["USA"].regionTotal.cases,
-            true
+            true,
+            false
           )),
             (allSyncedData[
               "USA"

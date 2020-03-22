@@ -32,7 +32,7 @@ exports.calculatePercentage = (total, amount, shouldRound = false, shouldMinusTo
   if(shouldMinusTotal) {
     newTotal = parseInt(amount.replace(",", "")) - parseInt(total.replace(",", ""))
   }
-  let rate = parseInt(total.replace(",", "")) / newTotal * 100;
+  let rate = (parseInt(total.replace(",", "")) / newTotal) * 100;
   if(isNaN(rate)) return 0
   rate = rate.toString();
   rate = rate.slice(0, rate.indexOf(".") + 3);
