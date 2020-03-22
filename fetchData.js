@@ -120,18 +120,23 @@ const gatherAllOverrides = allData => {
     syncWithAllCountryList(allData).then(allSyncedData => {
       allSyncedData["Global"].regions.map((region, index) => {
         if (region.country === "United States") {
-          (allSyncedData["Global"].regions[index].cases =
-            allSyncedData["USA"].regionTotal.cases),
-            (allSyncedData["Global"].regions[index].deaths =
-              allSyncedData["USA"].regionTotal.deaths),
-            (allSyncedData["Global"].regions[index].serious =
-              allSyncedData["USA"].regionTotal.serious),
-            (allSyncedData["Global"].regions[index].recovered =
-              allSyncedData["USA"].regionTotal.recovered);
-          allSyncedData["Global"].regions[index].todayCases =
-            allSyncedData["USA"].regionTotal.todayCases;
-          allSyncedData["Global"].regions[index].todayDeaths =
-            allSyncedData["USA"].regionTotal.todayDeaths;
+
+          allSyncedData["USA"].recoveryRate = utilities.calculatePercentage(
+            allSyncedData["USA"].regionTotal.recovered,
+            allSyncedData["USA"].regionTotal.cases,
+            true
+          ),
+          allSyncedData["USA"].regionTotal.todayDeathRate = utilities.calculatePercentage(
+            allSyncedData["USA"].regionTotal.todayDeaths,
+            allSyncedData["USA"].regionTotal.cases
+          ),
+          allSyncedData["USA"].regionTotal.todayCaseRate = utilities.calculatePercentage(
+            allSyncedData["USA"].regionTotal.todayCases,
+            allSyncedData["USA"].regionTotal.cases
+          )
+
+          allSyncedData["Global"].regions[index] = allSyncedData["USA"].regionTotal
+          allSyncedData["Global"].regions[index].country = "United States"
         }
       });
 
