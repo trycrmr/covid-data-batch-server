@@ -72,6 +72,11 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
     region.serious = region.serious === "N/A" ? "0" : region.serious;
   });
 
+  // TODO: Will re-add later.
+  // if(sheetName === "Global") {
+  //   sortedData = extractCountryFromRegion("Queue", "Global", sortedData)
+  // }
+
   return sortedData;
 };
 
@@ -83,32 +88,9 @@ const extractCountryFromRegion = (country, region, data) => {
     .indexOf(country);
 
   const targetCountry = data.regions[targetCountryIndex];
-  data.regionTotal = {
-    ...data.regionTotal,
-    cases: utilities.subtractTwoValues(
-      data.regionTotal.cases,
-      targetCountry.cases
-    ),
-    deaths: utilities.subtractTwoValues(
-      data.regionTotal.deaths,
-      targetCountry.deaths
-    ),
-    serious: utilities.subtractTwoValues(
-      data.regionTotal.serious,
-      targetCountry.serious
-    ),
-    critical: utilities.subtractTwoValues(
-      data.regionTotal.critical,
-      targetCountry.critical
-    ),
-    recovered: utilities.subtractTwoValues(
-      data.regionTotal.recovered,
-      targetCountry.recovered
-    ),
-    todayCases: '',
-    todayDeaths: ''
-  };
   data.regions.splice(targetCountryIndex, 1);
+
+
 
   return data;
 };

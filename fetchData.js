@@ -68,7 +68,8 @@ const calculatePercentages = regions => {
   regions.map(region => {
     region.todayDeathRate = utilities.calculatePercentage(
       region.todayDeaths,
-      region.cases
+      region.deaths,
+      false
     );
     region.todayCaseRate = utilities.calculatePercentage(
       region.todayCases,
@@ -88,6 +89,7 @@ const syncWithAllCountryList = allData => {
         ));
 
       allData[region].regions = calculatePercentages(allData[region].regions);
+
       allData[region].regionTotal = utilities.calculateRegionTotal(
         allData[region].regions
       );
@@ -118,28 +120,37 @@ const gatherAllOverrides = allData => {
     });
 
     syncWithAllCountryList(allData).then(allSyncedData => {
-      allSyncedData["Global"].regionTotal.todayCases = "0"
-      allSyncedData["Global"].regionTotal.todayDeaths = "0"
+      allSyncedData["Global"].regionTotal.todayCases = "0";
+      allSyncedData["Global"].regionTotal.todayDeaths = "0";
 
       allSyncedData["Global"].regions.map((region, index) => {
         if (region.country === "United States") {
-
-          allSyncedData["USA"].recoveryRate = utilities.calculatePercentage(
+          (allSyncedData["USA"].recoveryRate = utilities.calculatePercentage(
             allSyncedData["USA"].regionTotal.recovered,
             allSyncedData["USA"].regionTotal.cases,
-            true
-          ),
-          allSyncedData["USA"].regionTotal.todayDeathRate = utilities.calculatePercentage(
-            allSyncedData["USA"].regionTotal.todayDeaths,
-            allSyncedData["USA"].regionTotal.cases
-          ),
-          allSyncedData["USA"].regionTotal.todayCaseRate = utilities.calculatePercentage(
-            allSyncedData["USA"].regionTotal.todayCases,
-            allSyncedData["USA"].regionTotal.cases
-          )
+            true,
+            false
+          )),
+            (allSyncedData[
+              "USA"
+            ].regionTotal.todayDeathRate = utilities.calculatePercentage(
+              allSyncedData["USA"].regionTotal.deaths,
+              allSyncedData["USA"].regionTotal.cases,
+              false,
+              true
+            )),
+            (allSyncedData[
+              "USA"
+            ].regionTotal.todayCaseRate = utilities.calculatePercentage(
+              allSyncedData["USA"].regionTotal.todayCases,
+              allSyncedData["USA"].regionTotal.cases,
+              false,
+              true
+            ));
 
-          allSyncedData["Global"].regions[index] = allSyncedData["USA"].regionTotal
-          allSyncedData["Global"].regions[index].country = "United States"
+          allSyncedData["Global"].regions[index] =
+            allSyncedData["USA"].regionTotal;
+          allSyncedData["Global"].regions[index].country = "United States";
         }
       });
 

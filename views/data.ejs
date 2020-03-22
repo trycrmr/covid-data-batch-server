@@ -72,6 +72,19 @@
   <div class="content container-fluid">
     <div class="row">
       <div class="col col-lg-3">
+        <div class="container--wrap">
+          <h2 style="color: #DFDFEF; font-size: 30px; text-align: center; padding-top: 15px; font-weight: bolder; margin-bottom: 0;">
+            Site Update
+          </h2>
+          <p class="default-copy" style="padding: 5px 20px;">
+            Daily changes are now reported! Numbers reset around midnight (EST). <br/>
+            Coming soon: Africa and other region reports.
+          </p>
+          <p class="default-copy" style="padding: 0px 20px 20px 20px; font-size: 13px;">
+            nCoV2019's numbers increase faster because it continuously cross-references multiple credible sources and picks the largest reported value. &#127775; <br/>
+          </p>
+        </div>
+
         <span id="QuickFacts" class="mobile-dropdown-anchor"></span>
         <div class="container--wrap">
           <p style="color: #DFDFEF; font-size: 30px; text-align: center; padding-top: 15px; font-weight: bolder; margin-bottom: 0;">
@@ -405,7 +418,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(data=== "0") return '';
+            if(data=== "0" || row[3]==="0.00") return '';
             if(type==="display") return `&#8593; ${data} (${row[3]}%)`
             return data;
           }
@@ -414,7 +427,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(data=== "0") return '';
+            if(data=== "0" || row[6]==="0.00") return '';
             if(type==="display") return `&#8593; ${data} (${row[6]}%)`
             return data;
           }
@@ -458,7 +471,7 @@
         },
         {
           render: (data, type, row)=> {
-            if(row[2]=== "0") return `${data}`
+            if(row[2]=== "0"|| row[2] === "0.00") return `${data}`
             if(type==="display") return `${data} <br/> (&#8593; ${row[2]}%)`
             return data;
           }
@@ -466,7 +479,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(row[4] === "0") return `${data}`
+            if(row[4] === "0" || row[4] === "0.00") return `${data}`
             if(type==="display") return `${data} <br/> (&#8593; ${row[4]}%)`
             return data;
           }
