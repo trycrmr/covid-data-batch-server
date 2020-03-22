@@ -164,14 +164,15 @@
             <table id="sortable_table_<%= region %>" class="display compact responsive">
               <thead>
                 <tr>
-                  <th class="text--gray" data-action="name">Name</th>
-                  <th class="text--gray" data-action="confirmed">Confirmed</th>
-                  <th class="text--gray" data-action="confirmed-increase">Day Change</th>
-                  <th class="text--gray" data-action="confirmed-increase">Percentage Day Change</th>
-                  <th class="text--gray" data-action="deaths">Deceased</th>
-                  <th class="text--gray" data-action="deaths-increase">Day Change</th>
-                  <th class="text--gray" data-action="deaths-increase">Percentage Death Change</th>
-                  <th class="text--gray" data-action="recovered">Recovered</th>
+                  <th class="text--gray">Name</th>
+                  <th class="text--gray">Confirmed</th>
+                  <th class="text--gray">Past 24hrs</th>
+                  <th class="text--gray">Percentage Day Change</th>
+                  <th class="text--gray">Deceased</th>
+                  <th class="text--gray">DPast 24hrs</th>
+                  <th class="text--gray">Percentage Death Change</th>
+                  <th class="text--gray">Recovered</th>
+                  <th class="text--gray">Serious</th>
                 </tr>
               </thead>
               <tbody>
@@ -199,6 +200,9 @@
                   </td>
                   <td class="text--blue">
                     <%= data[region].regionTotal.recovered %>
+                  </td>
+                  <td class="text--yellow">
+                    <%= data[region].regionTotal.serious %>
                   </td>
                 </tr>
                 <% for( let i = 0; i < data[region].regions.length; i++ ) { %>
@@ -233,6 +237,9 @@
                   </td>
                   <td class="text--blue">
                     <%= data[region].regions[i].recovered %>
+                  </td>
+                  <td class="text--yellow">
+                    <%= data[region].regions[i].serious %>
                   </td>
                 </tr>
                 <% } %>
@@ -354,6 +361,18 @@
 
   <script>
     const mobileBreakpoint = 980;
+    const hideDayDataConfig = {
+      "columnDefs": [{
+          responsivePriority: 2,
+          targets: 1
+        },
+        {
+          "targets": [ 2,3,5,6 ],
+          "visible": false,
+          "searchable": false
+        }
+      ],
+    }
     let config = {
       responsive: {
         details: false
@@ -400,6 +419,7 @@
             return data;
           }
         },
+        {},
         {},
         {}
       ]
@@ -459,9 +479,18 @@
     $(document).ready(function() {
       $('#sortable_table_Global').DataTable(config);
       $('#sortable_table_USA').DataTable(config);
-      $('#sortable_table_China').DataTable(config);
-      $('#sortable_table_Canada').DataTable(config);
-      $('#sortable_table_Australia').DataTable(config);
+      $('#sortable_table_China').DataTable({
+        ...config,
+        ...hideDayDataConfig
+      });
+      $('#sortable_table_Canada').DataTable({
+        ...config,
+        ...hideDayDataConfig
+      });
+      $('#sortable_table_Australia').DataTable({
+        ...config,
+        ...hideDayDataConfig
+      });
       $('#sortable_table_LatinAmerica').DataTable(config);
       $('#sortable_table_Europe').DataTable(config);
 
