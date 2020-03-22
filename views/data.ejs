@@ -211,15 +211,7 @@
                   </td>
 
                   <td class="text--green">
-                    <% if (data[region].regions[i].country == "removed") { %>
-                    200
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    2,189
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    176
-                    <% } else { %>
                     <%= data[region].regions[i].cases %>
-                    <% } %>
                   </td>
 
                   <td class="text--green">
@@ -231,13 +223,7 @@
                   </td>
 
                   <td class="text--red">
-                    <% if (data[region].regions[i].country == "removed") { %>
-                    48
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    48
-                    <% } else { %>
                     <%= data[region].regions[i].deaths %>
-                    <% } %>
                   </td>
                   <td class="text--red">
                     <%= data[region].regions[i].todayDeaths %>
@@ -246,9 +232,7 @@
                     <%= data[region].regions[i].todayDeathRate %>
                   </td>
                   <td class="text--blue">
-                    <% if ( (data[region].regions[i].recovered !== '') && (data[region].regions[i].recovered !==  '-') ) { %>
                     <%= data[region].regions[i].recovered %>
-                    <% } %>
                   </td>
                 </tr>
                 <% } %>
@@ -297,23 +281,31 @@
                 <tr>
                   <th class="text--gray" data-action="name">o</th>
                   <th class="text--gray" data-action="confirmed">o</th>
+                  <th class="text--gray" data-action="caseRate">o</th>
                   <th class="text--gray" data-action="deaths">o</th>
+                  <th class="text--gray" data-action="deathRate">o</th>
                   <th class="text--gray" data-action="recovered">o</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>
-                    <span class="text--gray">TOTAL</span>
+                  <td class="text--gray">
+                    TOTAL
                   </td>
-                  <td class="text--center">
-                    <span class="text--green"><%= data[region].regionTotal.cases %></span>
+                  <td class="text--center text--green">
+                    <%= data[region].regionTotal.cases %>
                   </td>
-                  <td class="text--center">
-                    <span class="text--red"><%= data[region].regionTotal.deaths %></span>
+                  <td class="text--center text--green">
+                    <%= data[region].regionTotal.todayCaseRate %>
                   </td>
-                  <td class="text--center">
-                    <span class="text--blue"><%= data[region].regionTotal.recovered %></span>
+                  <td class="text--center text--red">
+                    <%= data[region].regionTotal.deaths %>
+                  </td>
+                  <td class="text--center text--red">
+                    <%= data[region].regionTotal.todayDeathRate %>
+                  </td>
+                  <td class="text--center text--blue">
+                    <%= data[region].regionTotal.recovered %>
                   </td>
                 </tr>
                 <% for( let i = 0; i < data[region].regions.length; i++ ) { %>
@@ -321,43 +313,23 @@
                 <% if (data[region].regions[i].country != "Queue") { %>
                 <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
-                  <td>
-                    <% if (data[region].regions[i].country == "USA") { %>
-                    <span class="text--gray">United States</span>
-                    <% } else { %>
-                    <span class="text--gray"><%= data[region].regions[i].country %></span>
-                    <% } %>
+                  <td class="text--gray">
+                    <%= data[region].regions[i].country %>
                   </td>
-
-                  <td>
-                    <% if (data[region].regions[i].country == "removed") { %>
-                    <span class="text--green">200</span>
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    <span class="text--green">2,189</span>
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    <span class="text--green">176</span>
-                    <% } else { %>
-                    <% if ( (data[region].regions[i].cases !== '') && (data[region].regions[i].cases !==  '-') ) { %>
-                    <span class="text--green"><%= data[region].regions[i].cases %></span>
-                    <% } %>
-                    <% } %>
+                  <td class="text--center text--green">
+                    <%= data[region].regions[i].cases %>
                   </td>
-
-                  <td>
-                    <% if (data[region].regions[i].country == "removed") { %>
-                    <span class="text--red">48</span>
-                    <% } else if(data[region].regions[i].country == "removed") { %>
-                    <span class="text--red">48</span>
-                    <% } else { %>
-                    <% if ( (data[region].regions[i].deaths !== '') && (data[region].regions[i].deaths !==  '-') ) { %>
-                    <span class="text--red"><%= data[region].regions[i].deaths %></span>
-                    <% } %>
-                    <% } %>
+                  <td class="text--center text--green">
+                    <%= data[region].regions[i].todayCaseRate %>
                   </td>
-                  <td>
-                    <% if ( (data[region].regions[i].recovered !== '') && (data[region].regions[i].recovered !==  '-') ) { %>
-                    <span class="text--blue"><%= data[region].regions[i].recovered %></span>
-                    <% } %>
+                  <td class="text--center text--red">
+                    <%= data[region].regions[i].deaths %>
+                  </td>
+                  <td class="text--center text--red">
+                    <%= data[region].regions[i].todayDeathRate %>
+                  </td>
+                  <td class="text--center text--blue">
+                    <%= data[region].regions[i].recovered %>
                   </td>
                 </tr>
                 <% } %>
@@ -368,15 +340,9 @@
             </table>
           </div>
           <% if ( index % 2 === 1 ) { %>
-          <div class="w-100"></div>
+
           <% } %>
           <% }) %>
-
-          <% if ( data.displayOrder.length % 2 !== 0) { %>
-          <div class="col row-wrapper">
-            &nbsp;
-          </div>
-          <% } %>
 
         </div>
       </div>
@@ -461,18 +427,30 @@
           targets: 0
         },
         {
-          className: "text--center",
-          "targets": [1, 2, 3]
-        },
-        {
-          orderSequence: ["asc", "desc"],
-          targets: [0, 2, 3]
+          "targets": [2, 4],
+          "visible": false,
+          "searchable": false
         }
       ],
-      "columns": [{
+      "columns": [
+        {
           "width": "50px"
         },
+        {
+          render: (data, type, row)=> {
+            if(row[2]=== "0") return `${data}`
+            if(type==="display") return `${data} <br/> (&#8593; ${row[2]}%)`
+            return data;
+          }
+        },
         {},
+        {
+          render: (data, type, row)=> {
+            if(row[4]=== "0") return `${data}`
+            if(type==="display") return `${data} <br/> (&#8593; ${row[4]}%)`
+            return data;
+          }
+        },
         {},
         {}
       ]
