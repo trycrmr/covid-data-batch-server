@@ -26,10 +26,13 @@ exports.addAllNumbers = numbers => {
   return numbers.reduce((a, b) => a + b).toLocaleString();
 };
 
-exports.calculatePercentage = (total, amount, shouldRound = false) => {
-  let rate =
-    (parseInt(total.replace(",", "")) / parseInt(amount.replace(",", ""))) *
-    100;
+exports.calculatePercentage = (total, amount, shouldRound = false, shouldMinusTotal = true) => {
+  let newTotal = parseInt(amount.replace(",", ""))
+
+  if(shouldMinusTotal) {
+    newTotal = parseInt(amount.replace(",", "")) - parseInt(total.replace(",", ""))
+  }
+  let rate = parseInt(total.replace(",", "")) / newTotal * 100;
   if(isNaN(rate)) return 0
   rate = rate.toString();
   rate = rate.slice(0, rate.indexOf(".") + 3);
