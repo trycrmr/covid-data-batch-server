@@ -169,7 +169,7 @@
                   <th class="text--gray">Past 24hrs</th>
                   <th class="text--gray">Percentage Day Change</th>
                   <th class="text--gray">Deceased</th>
-                  <th class="text--gray">DPast 24hrs</th>
+                  <th class="text--gray">Past 24hrs</th>
                   <th class="text--gray">Percentage Death Change</th>
                   <th class="text--gray">Recovered</th>
                   <th class="text--gray">Serious</th>
@@ -466,7 +466,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(row[4] === 0) return `${data}`
+            if(row[4] === "0") return `${data}`
             if(type==="display") return `${data} <br/> (&#8593; ${row[4]}%)`
             return data;
           }
