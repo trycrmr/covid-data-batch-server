@@ -118,6 +118,9 @@ const gatherAllOverrides = allData => {
     });
 
     syncWithAllCountryList(allData).then(allSyncedData => {
+      allSyncedData["Global"].regionTotal.todayCases = "0"
+      allSyncedData["Global"].regionTotal.todayDeaths = "0"
+
       allSyncedData["Global"].regions.map((region, index) => {
         if (region.country === "United States") {
 
