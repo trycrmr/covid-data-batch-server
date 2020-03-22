@@ -85,7 +85,9 @@ const syncWithAllCountryList = allData => {
       allData[region].regions,
         (novelData = utilities.syncTwoRegions(
           allData[region].regions,
-          novelData
+          novelData,
+          region,
+          [{region: "Global", skip: "Georgia"}]
         ));
 
       allData[region].regions = calculatePercentages(allData[region].regions);

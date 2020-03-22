@@ -33,7 +33,7 @@ exports.calculatePercentage = (total, amount, shouldRound = false, shouldMinusTo
     newTotal = parseInt(amount.replace(",", "")) - parseInt(total.replace(",", ""))
   }
   let rate = (parseInt(total.replace(",", "")) / newTotal) * 100;
-  if(isNaN(rate)) return 0
+  if(isNaN(rate) || !isFinite(rate)) return "0"
   rate = rate.toString();
   rate = rate.slice(0, rate.indexOf(".") + 3);
   return shouldRound ? Math.ceil(rate) : rate;
@@ -119,8 +119,14 @@ exports.getGreaterValue = (value1, value2) => {
   return value1 >= value2 ? value1.toLocaleString() : value2.toLocaleString();
 };
 
-exports.syncTwoRegions = (regions1, regions2) => {
+exports.syncTwoRegions = (regions1, regions2, region="", overrides=[]) => {
   regions1.map((country1, country1Index) => {
+    const skipRegion = overrides.filter(override => {
+      return override.region === region && override.skip === country1.country;
+    })
+
+    if(skipRegion.length) return;
+
     regions2.map((country2, country2Index) => {
       if (country1.country !== country2.country) return;
       const countryName = country1.country;

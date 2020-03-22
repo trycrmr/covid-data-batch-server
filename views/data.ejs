@@ -423,7 +423,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(data=== "0" || row[3]==="0.00") return '';
+            if(data=== "0" || row[3] === "0.00" || row[3] === "0") return '';
             if(type==="display") return `&#8593; ${data} (${row[3]}%)`
             return data;
           }
@@ -432,7 +432,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(data=== "0" || row[6]==="0.00") return '';
+            if(data=== "0" || row[6] === "0.00" || row[6] === "0") return '';
             if(type==="display") return `&#8593; ${data} (${row[6]}%)`
             return data;
           }
@@ -476,7 +476,7 @@
         },
         {
           render: (data, type, row)=> {
-            if(row[2]=== "0"|| row[2] === "0.00") return `${data}`
+            if(data=== "0" || row[2] === "0.00" || row[2] === "0") return '';
             if(type==="display") return `${data} <br/> (&#8593; ${row[2]}%)`
             return data;
           }
@@ -484,7 +484,7 @@
         {},
         {
           render: (data, type, row)=> {
-            if(row[4] === "0" || row[4] === "0.00") return `${data}`
+            if(data=== "0" || row[4] === "0.00" || row[4] === "0") return '';
             if(type==="display") return `${data} <br/> (&#8593; ${row[4]}%)`
             return data;
           }
