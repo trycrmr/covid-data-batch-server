@@ -119,5 +119,7 @@ exports.countryStructure = {
   deaths: "",
   recovered: "",
   serious: "",
-  critical: ""
+  critical: "",
+  todayCases: "",
+  todayDeaths: ""
 };

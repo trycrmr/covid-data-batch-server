@@ -14,18 +14,20 @@ exports.gatherAllRegions = () => {
       const regionData = JSON.parse(region);
       const regionName = regionData.regionName;
 
-      console.log(regionData.regions.length);
-      console.log(regionData.regionName);
-
       data[regionName] = regionData;
-      data[regionName].recoveryRate =
-        Math.ceil((parseInt(
-          data[regionName].regionTotal.recovered.replace(",", "")
-        ) /
-          parseInt(
-            data[regionName].regionTotal.cases.replace(",", "")
-          )) *
-        100);
+      data[regionName].recoveryRate = utilities.calculatePercentage(
+        data[regionName].regionTotal.recovered,
+        data[regionName].regionTotal.cases,
+        true
+      ),
+      data[regionName].regionTotal.todayDeathRate = utilities.calculatePercentage(
+        data[regionName].regionTotal.todayDeaths,
+        data[regionName].regionTotal.cases
+      ),
+      data[regionName].regionTotal.todayCaseRate = utilities.calculatePercentage(
+        data[regionName].regionTotal.todayCases,
+        data[regionName].regionTotal.cases
+      )
     });
 
     return {

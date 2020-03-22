@@ -5,6 +5,17 @@ const time = require("../getTime");
 const utilities = require("../utilities");
 const fs = require("fs");
 
+const keyMapping = {
+  country: "country ",
+  cases: "cases ",
+  deaths: "deaths ",
+  recovered: "recovered ",
+  serious: "serious ",
+  critical: "critical ",
+  new_cases: "todayCases",
+  new_deaths: "todayDeaths"
+};
+
 exports.fetchData = region => {
   return axios({
     method: "get",
@@ -40,41 +51,6 @@ const gatherBetweenRows = (startKey, endKey, data) => {
   return data.slice(startKey + 1, endKey);
 };
 
-const trimWhitespaceOnKeys = data => {
-  Object.keys(data).map(parentKey => {
-    if (["regionTotal"].includes(parentKey)) {
-      if (!data[parentKey]) return;
-      Object.keys(data[parentKey]).map(key => {
-        const oldKey = `${key}`;
-        const newKey = key.trim();
-
-        Object.defineProperty(
-          data[parentKey],
-          newKey,
-          Object.getOwnPropertyDescriptor(data[parentKey], oldKey)
-        );
-        delete data[parentKey][oldKey];
-      });
-    } else {
-      data[parentKey].map(obj => {
-        Object.keys(obj).map(key => {
-          const oldKey = `${key}`;
-          const newKey = key.trim();
-
-          Object.defineProperty(
-            obj,
-            newKey,
-            Object.getOwnPropertyDescriptor(obj, oldKey)
-          );
-          delete obj[oldKey];
-        });
-      });
-    }
-  });
-
-  return data;
-};
-
 const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
   const sanitiziedData = removeEmptyRows(data);
   const rowOrder = [startKey, totalKey];
@@ -85,12 +61,13 @@ const generatedRegionalData = (data, startKey, totalKey, sheetName) => {
       return element["country "] === totalKey;
     })
   };
-
-  trimWhitespaceOnKeys(sortedData);
-  sortedData.regions = utilities.renameCountryLabels(sortedData.regions);
   sortedData.regionName = sheetName;
   sortedData.lastUpdated = time.setUpdatedTime();
-
+  sortedData.regionTotal = utilities.remapKeys(sortedData.regionTotal, keyMapping)
+  sortedData.regions = sortedData.regions.map(region => {
+    return utilities.remapKeys(region, keyMapping)
+  })
+  sortedData.regions = utilities.renameCountryLabels(sortedData.regions)
   sortedData.regions.map(region => {
     region.serious = region.serious === "N/A" ? "0" : region.serious;
   });
@@ -127,7 +104,9 @@ const extractCountryFromRegion = (country, region, data) => {
     recovered: utilities.subtractTwoValues(
       data.regionTotal.recovered,
       targetCountry.recovered
-    )
+    ),
+    todayCases: '',
+    todayDeaths: ''
   };
   data.regions.splice(targetCountryIndex, 1);
 

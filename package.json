@@ -19,6 +19,7 @@
     "mongoose": "^5.8.10",
     "node-cron": "^2.0.3",
     "nodemon": "^2.0.2",
+    "novelcovid": "^1.0.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.5"
   }

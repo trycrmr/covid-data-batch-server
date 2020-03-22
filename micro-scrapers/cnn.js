@@ -17,7 +17,9 @@ exports.fetchData = () => {
     url: URL,
     responseType: "text"
   }).then(response => {
-      return extractJSON(response.data).map(state => utilities.remapKeys(state, keyMapping))
+      return extractJSON(response.data).map(state => {
+        return utilities.remapKeys(state, keyMapping)
+      })
   });
 };
 
