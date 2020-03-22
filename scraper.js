@@ -6,8 +6,8 @@ console.log("Scraper scheduled.");
 
 stats.fetchAllData();
 
-//Fetch data every minute.
-cron.schedule("*/2 * * * *", () => {
+//Fetch data three minutes.
+cron.schedule("*/3 * * * *", () => {
   try {
     console.log("Fetching data.");
     stats.fetchAllData();
