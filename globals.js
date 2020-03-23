@@ -123,3 +123,5 @@ exports.countryStructure = {
   todayCases: "",
   todayDeaths: ""
 };
+
+exports.CSV_URL = 'https://docs.google.com/spreadsheets/d/14dnT6yUxZiHWvPaEiWsOKu1xPQ_xwkuuUDfMGmFHinc/gviz/tq?tqx=out:csv&sheet=';

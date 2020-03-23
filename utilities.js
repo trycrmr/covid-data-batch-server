@@ -14,7 +14,7 @@ exports.getCSVPath = region => {
 };
 
 exports.getExternalCSV = region => {
-  return `https://docs.google.com/spreadsheets/d/12Wi7QBVQ-s_5SaXlK9QwTZ9PMR_kYnBZVveCyF3kgfs/gviz/tq?tqx=out:csv&sheet=${region}`;
+  return `${globals.CSV_URL}${region}`;
 };
 
 exports.addAllNumbers = numbers => {
@@ -74,6 +74,7 @@ exports.remapKeys = (country, keyMapping) => {
 
 exports.convertAllKeysToString = object => {
   Object.keys(object).map(key => {
+    if(object[key] === null) object[key] = "0"
     object[key] = isNaN(object[key])
       ? object[key]
       : object[key].toLocaleString();
