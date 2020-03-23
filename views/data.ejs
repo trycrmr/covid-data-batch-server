@@ -140,6 +140,60 @@
       <div class="col col-lg-9 tables">
         <div class="row m-0">
 
+          <div id="container_Saved" class="container--wrap col hide-mobile">
+            <div class="sorted-table__header">
+              <div class="sorted-table__container">
+                <h2>Saved Locations</h2>
+              </div>
+            </div>
+            <table id="sortable_table_Saved" class="display compact responsive">
+              <thead>
+                <tr>
+                  <th class="text--gray">Name</th>
+                  <th class="text--gray">Confirmed</th>
+                  <th class="text--gray">Changes Today</th>
+                  <th class="text--gray">Percentage Day Change</th>
+                  <th class="text--gray">Deceased</th>
+                  <th class="text--gray">Changes Today</th>
+                  <th class="text--gray">Percentage Death Change</th>
+                  <th class="text--gray">Recovered</th>
+                  <th class="text--gray">Serious</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text--gray">
+                    TOTAL
+                  </td>
+                  <td class="text--green">
+                    lol
+                  </td>
+                  <td class="text--green">
+                    lol
+                  </td>
+                  <td class="text--green">
+                    lol
+                  </td>
+                  <td class="text--red">
+                    lol
+                  </td>
+                  <td class="text--red">
+                    lol
+                  </td>
+                  <td class="text--red">
+                    lol
+                  </td>
+                  <td class="text--blue">
+                    lol
+                  </td>
+                  <td class="text--yellow">
+                    lol
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <% data.displayOrder.forEach(function(region, index){ %>
           <div id="container_<%= data.displayOrder[index] %>" class="container--wrap col hide-mobile">
             <div class="sorted-table__header">
@@ -211,6 +265,7 @@
                 <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
                   <td class="text--gray">
+                    <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <%= data[region].regions[i].country %>
                   </td>
 
@@ -321,6 +376,7 @@
                 <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
                   <td class="text--gray">
+                    <span class="favorite-row" data-region="<%= region %>" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <%= data[region].regions[i].country %>
                   </td>
                   <td class="text--green">
@@ -377,6 +433,7 @@
       responsive: {
         details: false
       },
+      data: null,
       "scrollY": "370px",
       "scrollCollapse": true,
       "language": {
@@ -400,28 +457,43 @@
         }
       ],
       "columns": [{
+          data: "country",
           "width": "20%"
         },
-        {},
         {
+          data: "cases"
+        },
+        {
+          data: "caseRateCopy",
           render: (data, type, row)=> {
-            if(data=== "0" || row[3] === "0.00" || row[3] === "0") return '';
-            if(type==="display") return `&#8593; ${data} (${row[3]}%)`
+            if(data=== "0" || row.caseRate === "0.00" || row.caseRate === "0") return '';
+            if(type==="display") return `&#8593; ${data} (${row.caseRate}%)`
             return data;
           }
         },
-        {},
-        {},
         {
+          data: "caseRate"
+        },
+        {
+          data: "deaths"
+        },
+        {
+          data: "deathRateCopy",
           render: (data, type, row)=> {
-            if(data=== "0" || row[6] === "0.00" || row[6] === "0") return '';
-            if(type==="display") return `&#8593; ${data} (${row[6]}%)`
+            if(data=== "0" || row.deathRate === "0.00" || row.deathRate === "0") return '';
+            if(type==="display") return `&#8593; ${data} (${row.deathRate}%)`
             return data;
           }
         },
-        {},
-        {},
-        {}
+        {
+          data: "deathRate",
+        },
+        {
+          data: "recovered"
+        },
+        {
+          data: "serious"
+        }
       ]
     }
 
@@ -477,7 +549,7 @@
     }
 
     $(document).ready(function() {
-      $('#sortable_table_Global').DataTable(config);
+      var globalTable = $('#sortable_table_Global').DataTable(config);
       $('#sortable_table_USA').DataTable(config);
       $('#sortable_table_China').DataTable({
         ...config,
@@ -494,7 +566,7 @@
       $('#sortable_table_LatinAmerica').DataTable(config);
       $('#sortable_table_Europe').DataTable(config);
 
-      $('#sortable_table_mobile_Global').DataTable({
+      var globalTable = $('#sortable_table_mobile_Global').DataTable({
         ...mobileConfig,
         "scrollY": "370px"
       });
@@ -504,6 +576,111 @@
       $('#sortable_table_mobile_Australia').DataTable(mobileConfig);
       $('#sortable_table_mobile_LatinAmerica').DataTable(mobileConfig);
       $('#sortable_table_mobile_Europe').DataTable(mobileConfig);
+
+
+      var savedTable = $('#sortable_table_Saved').DataTable(config);
+      //var favoritesMobileTable = $('#sortable_table_mobile_Favorites').DataTable(mobileConfig);
+
+      $("#sortable_table_Saved").on('click', '.save-button', function (event) {
+        event.preventDefault();
+        if (!window.localStorage) return;
+
+        var $currentRow = $(this).closest("tr");
+        var $saveButton = $currentRow.find('.save-button');
+        var rowData = {
+          name: $saveButton.data('name'),
+          type: $saveButton.data('type')
+        }
+
+        savedTable.row($currentRow).remove().draw();
+        $(`.save-button[data-name="${rowData.name}"][data-name="${rowData.name}"]`).attr("data-status", "unselected")
+
+        removeRow(rowData)
+      });
+
+      $("#sortable_table_Global").on('click', '.save-button[data-status="selected"]', function (event) {
+        event.preventDefault();
+        if (!window.localStorage) return;
+
+        var $currentRow = $(this).closest("tr");
+        var $saveButton = $currentRow.find('.save-button');
+        var rowData = {
+          name: $saveButton.data('name'),
+          type: $saveButton.data('type')
+        }
+
+        var $targetRow = $(`#sortable_table_Saved [data-name="${rowData.name}"][data-name="${rowData.name}"]`).closest("tr")
+        savedTable.row($targetRow).remove().draw();
+
+        $saveButton.attr('data-status', 'unselected')
+
+        removeRow(rowData)
+      });
+
+      $("#sortable_table_Global").on('click', '.save-button[data-status="unselected"]', function (event) {
+        event.preventDefault();
+        if (!window.localStorage) return;
+
+        var $currentRow = $(this).closest("tr");
+        var $saveButton = $currentRow.find('.save-button');
+        var data = $("#sortable_table_Global").DataTable().row($currentRow).data();
+        $saveButton.attr('data-status', 'selected')
+
+        savedTable.row.add(data).draw();
+        saveRow({
+          name: $saveButton.data('name'),
+          type: $saveButton.data('type')
+        })
+      });
+
+      var getSavedRows = function() {
+        //TODO: Show message that says they can't save on their device?
+        if (!window.localStorage) return;
+
+        let data = JSON.parse(localStorage.getItem('germtracker'));
+        if(data == null) data = [];
+
+        return data;
+      }
+
+      var saveRow = function(rowData) {
+        var savedRows = getSavedRows()
+        var rowAlreadySaved = !!savedRows.filter(row => {
+          return row.name === rowData.name && row.type === rowData.type
+        }).length
+
+        if(rowAlreadySaved) return
+
+        savedRows.push(rowData)
+        localStorage.setItem('germtracker', JSON.stringify(savedRows));
+      }
+
+      var removeRow = function(rowData) {
+        console.log(rowData);
+
+        var savedRows = getSavedRows()
+        var remainingRows = savedRows.filter(row => {
+          return row.name !== rowData.name
+        })
+
+        console.log(remainingRows);
+
+        localStorage.setItem('germtracker', JSON.stringify(remainingRows));
+      }
+
+      var addAllRows = function() {
+        getSavedRows().forEach(row => {
+          addRow(row)
+        })
+      }
+
+      var addRow = function(rowData) {
+        $(`[data-name="${rowData.name}"][data-name="${rowData.name}"]`).click()
+      }
+
+      addAllRows();
+
+
 
       var displayOrder = [
         "QuickFacts",

@@ -617,3 +617,19 @@ table.dataTable.compact thead.total_row th {
     width: 100%;
   }
 }
+
+.save-button {
+  padding-right: 10px;
+  cursor: pointer
+}
+
+.save-button:hover {
+  color: red;
+}
+.save-button[data-status="selected"] {
+  color: orange;
+}
+
+#sortable_table_Saved .save-button {
+  color: orange;
+}
