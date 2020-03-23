@@ -69,11 +69,14 @@ const calculatePercentages = regions => {
     region.todayDeathRate = utilities.calculatePercentage(
       region.todayDeaths,
       region.deaths,
-      false
+      false,
+      true
     );
     region.todayCaseRate = utilities.calculatePercentage(
       region.todayCases,
-      region.cases
+      region.cases,
+      false,
+      true
     );
   });
   return regions;
@@ -139,8 +142,8 @@ const gatherAllOverrides = allData => {
             (allSyncedData[
               "USA"
             ].regionTotal.todayDeathRate = utilities.calculatePercentage(
+              allSyncedData["USA"].regionTotal.todayDeaths,
               allSyncedData["USA"].regionTotal.deaths,
-              allSyncedData["USA"].regionTotal.cases,
               false,
               true
             )),
