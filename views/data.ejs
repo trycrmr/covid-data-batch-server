@@ -581,7 +581,7 @@
       var savedTable = $('#sortable_table_Saved').DataTable(config);
       //var favoritesMobileTable = $('#sortable_table_mobile_Favorites').DataTable(mobileConfig);
 
-      $("#sortable_table_Saved").on('click', '.save-button', function (event) {
+      var handleRemovingOwnRow = function (event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -596,9 +596,9 @@
         $(`.save-button[data-name="${rowData.name}"][data-name="${rowData.name}"]`).attr("data-status", "unselected")
 
         removeRow(rowData)
-      });
+      }
 
-      $("#sortable_table_Global").on('click', '.save-button[data-status="selected"]', function (event) {
+      var handleUnselectingSavedRow = function (event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -615,15 +615,17 @@
         $saveButton.attr('data-status', 'unselected')
 
         removeRow(rowData)
-      });
+      }
 
-      $("#sortable_table_Global").on('click', '.save-button[data-status="unselected"]', function (event) {
+      var handleSelectingSavedRow = function (event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
         var $currentRow = $(this).closest("tr");
+        var $currentTable = $(this).closest("table")
         var $saveButton = $currentRow.find('.save-button');
-        var data = $("#sortable_table_Global").DataTable().row($currentRow).data();
+
+        var data = $currentTable.DataTable().row($currentRow).data();
         $saveButton.attr('data-status', 'selected')
 
         savedTable.row.add(data).draw();
@@ -631,7 +633,10 @@
           name: $saveButton.data('name'),
           type: $saveButton.data('type')
         })
-      });
+      }
+      $("#sortable_table_Saved").on('click', '.save-button', handleRemovingOwnRow);
+      $("#sortable_table_Global").on('click', '.save-button[data-status="selected"]', handleUnselectingSavedRow);
+      $("#sortable_table_Global").on('click', '.save-button[data-status="unselected"]', handleSelectingSavedRow);
 
       var getSavedRows = function() {
         //TODO: Show message that says they can't save on their device?
@@ -656,14 +661,10 @@
       }
 
       var removeRow = function(rowData) {
-        console.log(rowData);
-
         var savedRows = getSavedRows()
         var remainingRows = savedRows.filter(row => {
           return row.name !== rowData.name
         })
-
-        console.log(remainingRows);
 
         localStorage.setItem('germtracker', JSON.stringify(remainingRows));
       }
