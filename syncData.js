@@ -13,8 +13,8 @@ exports.gatherAllRegions = () => {
     values.forEach(region => {
       const regionData = JSON.parse(region);
       const regionName = regionData.regionName;
-
       data[regionName] = regionData;
+      
       data[regionName].recoveryRate = utilities.calculatePercentage(
         data[regionName].regionTotal.recovered,
         data[regionName].regionTotal.cases,
@@ -23,11 +23,15 @@ exports.gatherAllRegions = () => {
       ),
       data[regionName].regionTotal.todayDeathRate = utilities.calculatePercentage(
         data[regionName].regionTotal.todayDeaths,
-        data[regionName].regionTotal.deaths
+        data[regionName].regionTotal.deaths,
+        false,
+        true
       ),
       data[regionName].regionTotal.todayCaseRate = utilities.calculatePercentage(
         data[regionName].regionTotal.todayCases,
-        data[regionName].regionTotal.cases
+        data[regionName].regionTotal.cases,
+        false,
+        true
       )
     });
 
