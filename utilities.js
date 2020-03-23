@@ -35,7 +35,10 @@ exports.calculatePercentage = (total, amount, shouldRound = false, shouldMinusTo
   let rate = (parseInt(total.replace(",", "")) / newTotal) * 100;
   if(isNaN(rate) || !isFinite(rate)) return "0"
   rate = rate.toString();
-  rate = rate.slice(0, rate.indexOf(".") + 3);
+
+  if(rate.indexOf(".") !== -1) {
+    rate = rate.slice(0, rate.indexOf(".") + 3);
+  }
   return shouldRound ? Math.ceil(rate) : rate;
 };
 
