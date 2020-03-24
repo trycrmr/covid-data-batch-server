@@ -146,7 +146,7 @@
                 <h2>Saved Locations</h2>
               </div>
             </div>
-            <table id="sortable_table_Saved" class="display compact responsive">
+            <table id="sortable_table_Saved" class="saved-table display compact responsive">
               <thead>
                 <tr>
                   <th class="text--gray">Name</th>
@@ -458,13 +458,16 @@
       ],
       "columns": [{
           data: "country",
-          "width": "20%"
+          "width": "20%",
+          className: 'text--gray'
         },
         {
-          data: "cases"
+          data: "cases",
+          className: 'text--green'
         },
         {
           data: "caseRateCopy",
+          className: 'text--green',
           render: (data, type, row)=> {
             if(data=== "0" || row.caseRate === "0.00" || row.caseRate === "0") return '';
             if(type==="display") return `&#8593; ${data} (${row.caseRate}%)`
@@ -472,13 +475,16 @@
           }
         },
         {
-          data: "caseRate"
+          data: "caseRate",
+          className: 'text--green',
         },
         {
-          data: "deaths"
+          data: "deaths",
+          className: 'text--red',
         },
         {
           data: "deathRateCopy",
+          className: 'text--red',
           render: (data, type, row)=> {
             if(data=== "0" || row.deathRate === "0.00" || row.deathRate === "0") return '';
             if(type==="display") return `&#8593; ${data} (${row.deathRate}%)`
@@ -487,12 +493,15 @@
         },
         {
           data: "deathRate",
+          className: 'text--red'
         },
         {
-          data: "recovered"
+          data: "recovered",
+          className: 'text--blue'
         },
         {
-          data: "serious"
+          data: "serious",
+          className: 'text--yellow'
         }
       ]
     }
@@ -526,25 +535,40 @@
       ],
       "columns": [
         {
+          data: "country",
+          className: 'text--gray',
           "width": "50px"
         },
         {
+          data: "cases",
+          className: 'text--green',
           render: (data, type, row)=> {
-            if(data=== "0" || row[2] === "0.00") return '';
-            if(type==="display" && row[2] !== "0") return `${data} <br/> (&#8593; ${row[2]}%)`
+            if(data=== "0" || row.caseRate === "0.00") return '';
+            if(type==="display" && row.caseRate !== "0") return `${data} <br/> (&#8593; ${row.caseRate}%)`
             return data;
           }
         },
-        {},
         {
+          data: "caseRate",
+          className: 'text--green',
+        },
+        {
+          data: "deaths",
+          className: 'text--red',
           render: (data, type, row)=> {
-            if(data=== "0" || row[4] === "0.00") return '';
-            if(type==="display" && row[4] !== "0") return `${data} <br/> (&#8593; ${row[4]}%)`
+            if(data=== "0" || row.deathRate === "0.00") return '';
+            if(type==="display" && row.deathRate !== "0") return `${data} <br/> (&#8593; ${row.deathRate}%)`
             return data;
           }
         },
-        {},
-        {}
+        {
+          data: "deathRate",
+          className: 'text--red',
+        },
+        {
+          data: "recovered",
+          className: 'text--blue'
+        }
       ]
     }
 
@@ -635,8 +659,8 @@
         })
       }
       $("#sortable_table_Saved").on('click', '.save-button', handleRemovingOwnRow);
-      $("#sortable_table_Global").on('click', '.save-button[data-status="selected"]', handleUnselectingSavedRow);
-      $("#sortable_table_Global").on('click', '.save-button[data-status="unselected"]', handleSelectingSavedRow);
+      $("table:not(.saved-table)").on('click', '.save-button[data-status="selected"]', handleUnselectingSavedRow);
+      $("table:not(.saved-table)").on('click', '.save-button[data-status="unselected"]', handleSelectingSavedRow);
 
       var getSavedRows = function() {
         //TODO: Show message that says they can't save on their device?
