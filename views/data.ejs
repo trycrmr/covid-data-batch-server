@@ -26,6 +26,27 @@
         </div>
       </div>
 
+      <div id="mobile-nav-legend_Saved" class="mobile-nav-legend">
+        <div data-region="Saved" data-action="name" class="cateogry_sort mobile-nav-legend-item">
+          <span class="legend-marker name">&#8226;</span>
+          <span class="legend-label">Name</span>
+        </div>
+        <div class="mobile-nav-legend-items">
+          <div data-region="Saved" data-action="confirmed" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker confirmed">&#8226;</span>
+            <span class="legend-label sorted-column--desc">Cases</span>
+          </div>
+          <div data-region="Saved" data-action="deaths" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker deceased">&#8226;</span>
+            <span class="legend-label">Deaths</span>
+          </div>
+          <div data-region="Saved" data-action="recovered" class="cateogry_sort mobile-nav-legend-item">
+            <span class="legend-marker recovered">&#8226;</span>
+            <span class="legend-label">Recovered</span>
+          </div>
+        </div>
+      </div>
+
       <% data.displayOrder.forEach(function(region, index){ %>
 
       <div id="mobile-nav-legend_<%= region %>" class="mobile-nav-legend">
@@ -143,7 +164,7 @@
           <div id="container_Saved" class="container--wrap col hide-mobile">
             <div class="sorted-table__header">
               <div class="sorted-table__container">
-                <h2>Saved Locations</h2>
+                <h2>Saved</h2>
               </div>
             </div>
             <table id="sortable_table_Saved" class="saved-table display compact responsive">
@@ -165,21 +186,22 @@
             </table>
           </div>
 
-          <div id="container_mobile_Saved" class="container--wrap col hide-desktop">
+          <div id="container_mobile_Saved" class="container--wrap col hide-desktop" style="display: none;">
             <div class="sorted-table__header">
               <div class="sorted-table__container">
-                <h2>Saved Locations</h2>
+                <h2>Saved</h2>
               </div>
             </div>
             <table id="sortable_table_mobile_Saved" class="saved-table display compact responsive">
               <thead>
                 <tr>
-                  <th class="text--gray">Name</th>
-                  <th class="text--gray">Confirmed</th>
-                  <th class="text--gray">Percentage Day Change</th>
-                  <th class="text--gray">Deceased</th>
-                  <th class="text--gray">Percentage Death Change</th>
-                  <th class="text--gray">Recovered</th>
+                  <th class="text--gray" data-action="save">o</th>
+                  <th class="text--gray" data-action="name">o</th>
+                  <th class="text--gray" data-action="confirmed">o</th>
+                  <th class="text--gray" data-action="caseRate">o</th>
+                  <th class="text--gray" data-action="deaths">o</th>
+                  <th class="text--gray" data-action="deathRate">o</th>
+                  <th class="text--gray" data-action="recovered">o</th>
                 </tr>
               </thead>
               <tbody>
@@ -259,9 +281,9 @@
                 <tr>
                   <td class="text--gray">
                     <% if (region === "USA") { %>
-                      <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <%} else { %>
-                      <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <% } %>
                     <%= data[region].regions[i].country %>
                   </td>
@@ -338,6 +360,7 @@
             <table id="sortable_table_mobile_<%= region %>" class="display compact responsive">
               <thead>
                 <tr>
+                  <th class="text--gray" data-action="save">o</th>
                   <th class="text--gray" data-action="name">o</th>
                   <th class="text--gray" data-action="confirmed">o</th>
                   <th class="text--gray" data-action="caseRate">o</th>
@@ -348,6 +371,9 @@
               </thead>
               <tbody>
                 <tr>
+                  <td>
+                    &nbsp;
+                  </td>
                   <td class="text--gray">
                     TOTAL
                   </td>
@@ -374,10 +400,12 @@
                 <tr>
                   <td class="text--gray">
                     <% if (region === "USA") { %>
-                      <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <%} else { %>
-                      <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
                     <% } %>
+                  </td>
+                  <td>
                     <%= data[region].regions[i].country %>
                   </td>
                   <td class="text--green">
@@ -424,7 +452,7 @@
           targets: 1
         },
         {
-          "targets": [ 2,3,5,6 ],
+          "targets": [2, 3, 5, 6],
           "visible": false,
           "searchable": false
         }
@@ -452,7 +480,7 @@
           targets: 1
         },
         {
-          "targets": [ 3, 6 ],
+          "targets": [3, 6],
           "visible": false,
           "searchable": false
         }
@@ -469,9 +497,9 @@
         {
           data: "caseRateCopy",
           className: 'text--green',
-          render: (data, type, row)=> {
-            if(data=== "0" || row.caseRate === "0.00" || row.caseRate === "0") return '';
-            if(type==="display") return `&#8593; ${data} (${row.caseRate}%)`
+          render: (data, type, row) => {
+            if (data === "0" || row.caseRate === "0.00" || row.caseRate === "0") return '';
+            if (type === "display") return `&#8593; ${data} (${row.caseRate}%)`
             return data;
           }
         },
@@ -486,9 +514,9 @@
         {
           data: "deathRateCopy",
           className: 'text--red',
-          render: (data, type, row)=> {
-            if(data=== "0" || row.deathRate === "0.00" || row.deathRate === "0") return '';
-            if(type==="display") return `&#8593; ${data} (${row.deathRate}%)`
+          render: (data, type, row) => {
+            if (data === "0" || row.deathRate === "0.00" || row.deathRate === "0") return '';
+            if (type === "display") return `&#8593; ${data} (${row.deathRate}%)`
             return data;
           }
         },
@@ -521,31 +549,34 @@
       "bInfo": false,
       "bPaginate": false,
       "order": [
-        [1, "desc"]
+        [2, "desc"]
       ],
 
       "columnDefs": [{
           width: 50,
-          targets: 0
+          targets: 1
         },
         {
-          "targets": [2, 4],
+          "targets": [3, 5],
           "visible": false,
           "searchable": false
         }
       ],
-      "columns": [
+      "columns": [{
+          data: "saved",
+          "width": "1px"
+        },
         {
           data: "country",
           className: 'text--gray',
-          "width": "50px"
+          "width": "70px"
         },
         {
           data: "cases",
           className: 'text--green',
-          render: (data, type, row)=> {
-            if(data=== "0" || row.caseRate === "0.00") return '';
-            if(type==="display" && row.caseRate !== "0") return `${data} <br/> (&#8593; ${row.caseRate}%)`
+          render: (data, type, row) => {
+            if (data === "0" || row.caseRate === "0.00") return '';
+            if (type === "display" && row.caseRate !== "0") return `${data} <br/> &#8593; ${row.caseRate}%`
             return data;
           }
         },
@@ -556,9 +587,9 @@
         {
           data: "deaths",
           className: 'text--red',
-          render: (data, type, row)=> {
-            if(data=== "0" || row.deathRate === "0.00") return '';
-            if(type==="display" && row.deathRate !== "0") return `${data} <br/> (&#8593; ${row.deathRate}%)`
+          render: (data, type, row) => {
+            if (data === "0" || row.deathRate === "0.00") return '';
+            if (type === "display" && row.deathRate !== "0") return `${data} <br/> &#8593; ${row.deathRate}%`
             return data;
           }
         },
@@ -602,7 +633,6 @@
       $('#sortable_table_mobile_LatinAmerica').DataTable(mobileConfig);
       $('#sortable_table_mobile_Europe').DataTable(mobileConfig);
 
-
       var savedTable = $('#sortable_table_Saved').DataTable(config);
       var savedMobileTable = $('#sortable_table_mobile_Saved').DataTable(mobileConfig);
 
@@ -610,7 +640,15 @@
         return $('#sortable_table_Saved').is(':visible') ? savedTable : savedMobileTable
       }
 
-      var handleRemovingOwnRow = function (event) {
+      var activeSavedContainerId = function() {
+        return $('#container_Saved').is(':visible') ? '#container_Saved' : '#container_mobile_Saved'
+      }
+
+      var activeUSATable = function() {
+        return $('#sortable_table_USA').is(':visible') ? '#sortable_table_USA' : '#sortable_table_mobile_USA'
+      }
+
+      var handleRemovingOwnRow = function(event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -620,14 +658,13 @@
           name: $saveButton.data('name'),
           type: $saveButton.data('type')
         }
-          console.log('lol');
         activeSavedTable().row($currentRow).remove().draw();
         $(`.save-button[data-name="${rowData.name}"][data-name="${rowData.name}"]`).attr("data-status", "unselected")
 
         removeRow(rowData)
       }
 
-      var handleUnselectingSavedRow = function (event) {
+      var handleUnselectingSavedRow = function(event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -637,8 +674,8 @@
           name: $saveButton.data('name'),
           type: $saveButton.data('type')
         }
+        var $targetRow = $(`.saved-table:visible [data-name="${rowData.name}"][data-name="${rowData.name}"]`).closest("tr")
 
-        var $targetRow = $(`#sortable_table_Saved [data-name="${rowData.name}"][data-name="${rowData.name}"]`).closest("tr")
         activeSavedTable().row($targetRow).remove().draw();
 
         $saveButton.attr('data-status', 'unselected')
@@ -646,7 +683,7 @@
         removeRow(rowData)
       }
 
-      var handleSelectingSavedRow = function (event) {
+      var handleSelectingSavedRow = function(event) {
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -672,7 +709,7 @@
         if (!window.localStorage) return;
 
         let data = JSON.parse(localStorage.getItem('germtracker'));
-        if(data == null) data = [];
+        if (data == null) data = [];
 
         return data;
       }
@@ -683,10 +720,13 @@
           return row.name === rowData.name && row.type === rowData.type
         }).length
 
-        if(rowAlreadySaved) return
+        if (rowAlreadySaved) return
 
         savedRows.push(rowData)
         localStorage.setItem('germtracker', JSON.stringify(savedRows));
+        if(getSavedRows().length) {
+          $(activeSavedContainerId()).css({'display': 'block'})
+        }
       }
 
       var removeRow = function(rowData) {
@@ -696,22 +736,29 @@
         })
 
         localStorage.setItem('germtracker', JSON.stringify(remainingRows));
+        if(!getSavedRows().length) {
+          $(activeSavedContainerId()).css({'display': 'none'})
+        }
       }
 
       var addAllRows = function() {
+        if(getSavedRows().length) {
+          $(activeSavedContainerId()).css({'display': 'block'})
+        }
+
         getSavedRows().forEach(row => {
           addRow(row)
         })
       }
 
       var addRow = function(rowData) {
-        let prefix = rowData.type === "state" ? '#sortable_table_USA' : ''
-        $(`${prefix} [data-name="${rowData.name}"][data-name="${rowData.name}"]`).first().click()
+        let prefix = ''
+        if (rowData.type === "state") prefix += activeUSATable()
+
+        $(`${prefix} [data-name="${rowData.name}"][data-name="${rowData.name}"]:visible`).first().click()
       }
 
       addAllRows();
-
-
 
       var displayOrder = [
         "QuickFacts",
@@ -728,13 +775,13 @@
       var topPoistion = (region) => {
         return $('#container_mobile_' + region).offset().top - 250
       }
-      var showRegionTotal = (region) => {
+      var showRegionTotal = (region, showTotalBar=true) => {
         $dropdownLabel.text(region);
         $('.show-element').removeClass('show-element')
 
         $('.sort-copy').addClass('show-element')
         $('#mobile-nav-legend_' + region).addClass('show-element')
-        $('#mobile-nav-total_' + region).addClass('show-element')
+        if(showTotalBar) $('#mobile-nav-total_' + region).addClass('show-element')
       }
 
       var handleCategorySort = function() {
@@ -789,6 +836,8 @@
           showRegionTotal(displayOrder[2])
         } else if (scrollPosition > topPoistion(displayOrder[1])) {
           showRegionTotal(displayOrder[1])
+        } else if (scrollPosition > topPoistion('Saved')) {
+          if($('#container_mobile_Saved').is(':visible')) showRegionTotal('Saved', false)
         } else if (scrollPosition > 60) {
           handleCategorySort();
           $('.show-element').removeClass('show-element')
