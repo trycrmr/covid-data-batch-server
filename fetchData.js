@@ -21,11 +21,15 @@ exports.fetchAllData = async () => {
         if (resolvedRegion === {})
           return Promise.reject("Couldn't fetch data for a region.");
         allData[resolvedRegion.regionName] = resolvedRegion;
+
+
       });
 
       if (Object.keys(allData).indexOf("undefined") >= 0) {
         return Promise.reject("Couldn't fetch data.");
       }
+
+      console.log(allData["USA"].regionTotal);
 
       console.log("[SYNC] Fetching all BNO data.");
 
@@ -47,6 +51,8 @@ exports.fetchAllData = async () => {
               allData["Europe"].regions,
               allData["Global"].regions
             ));
+
+            console.log(allData["USA"].regionTotal);
 
             gatherAllOverrides(allData);
         })
@@ -97,12 +103,15 @@ const syncWithAllCountryList = allData => {
 
       allData[region].regions = calculatePercentages(allData[region].regions);
 
+      const tempTotal = allData["USA"].regionTotal
 
       if(region !== "Global") {
         allData[region].regionTotal = utilities.calculateRegionTotal(
           allData[region].regions
         );
       }
+
+      allData["USA"].regionTotal = tempTotal
     });
     return allData;
   });
