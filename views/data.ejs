@@ -639,6 +639,7 @@
         ...config,
         ...hideDayDataConfig
       });
+      $('#sortable_table_Africa').DataTable(config);
       $('#sortable_table_LatinAmerica').DataTable(config);
       $('#sortable_table_Europe').DataTable(config);
 
@@ -650,6 +651,7 @@
       $('#sortable_table_mobile_China').DataTable(mobileConfig);
       $('#sortable_table_mobile_Canada').DataTable(mobileConfig);
       $('#sortable_table_mobile_Australia').DataTable(mobileConfig);
+      $('#sortable_table_mobile_Africa').DataTable(mobileConfig);
       $('#sortable_table_mobile_LatinAmerica').DataTable(mobileConfig);
       $('#sortable_table_mobile_Europe').DataTable(mobileConfig);
 
@@ -798,6 +800,7 @@
         "China",
         "Canada",
         "Australia",
+        "Africa",
         "LatinAmerica"
       ]
       var $dropdownLabel = $('.dropdown-toggle');
@@ -852,7 +855,9 @@
 
         // Toggle the Legend and Totals in Dropdown Nav depending on
         // which Region is currently in the viewport.
-        if (scrollPosition > topPoistion(displayOrder[7])) {
+        if (scrollPosition > topPoistion(displayOrder[8])) {
+          showRegionTotal(displayOrder[8])
+        } else if (scrollPosition > topPoistion(displayOrder[7])) {
           showRegionTotal(displayOrder[7])
         } else if (scrollPosition > topPoistion(displayOrder[6])) {
           showRegionTotal(displayOrder[6])
