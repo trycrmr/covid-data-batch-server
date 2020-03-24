@@ -29,8 +29,6 @@ exports.fetchAllData = async () => {
         return Promise.reject("Couldn't fetch data.");
       }
 
-      console.log(allData["USA"].regionTotal);
-
       console.log("[SYNC] Fetching all BNO data.");
 
       allData["LatinAmerica"].regions,
@@ -51,8 +49,6 @@ exports.fetchAllData = async () => {
               allData["Europe"].regions,
               allData["Global"].regions
             ));
-
-            console.log(allData["USA"].regionTotal);
 
             gatherAllOverrides(allData);
         })
