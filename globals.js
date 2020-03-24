@@ -163,7 +163,7 @@ exports.countryLists = {
 exports.AlternativeLabelNames = {
   "Bosnia and Herzegovina": "Bosnia",
   Brasil: "Brazil",
-  Czechia: "Czech Republic",
+  "Czech Republic": "Czechia",
   México: "Mexico",
   Panamá: "Panama",
   "Rep. Dominicana": "Dominican Republic"
