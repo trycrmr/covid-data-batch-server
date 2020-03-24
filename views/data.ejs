@@ -855,7 +855,9 @@
 
         // Toggle the Legend and Totals in Dropdown Nav depending on
         // which Region is currently in the viewport.
-        if (scrollPosition > topPoistion(displayOrder[7])) {
+        if (scrollPosition > topPoistion(displayOrder[8])) {
+          showRegionTotal(displayOrder[8])
+        } else if (scrollPosition > topPoistion(displayOrder[7])) {
           showRegionTotal(displayOrder[7])
         } else if (scrollPosition > topPoistion(displayOrder[6])) {
           showRegionTotal(displayOrder[6])
