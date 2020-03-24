@@ -58,9 +58,9 @@ exports.displayOrder = [
   "USA",
   "Europe",
   "China",
+  "Africa",
   "Canada",
   "Australia",
-  "Africa",
   "LatinAmerica"
 ];
 
