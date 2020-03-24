@@ -10,30 +10,16 @@ const keyMapping = {
   recovered: "recovered"
 };
 
-exports.getSelectedCountries = (region, countries) => {
+exports.fetchData = () => {
   return axios.get(`${API_ROUTE}`).then(data => {
     const allCountries = data.data;
-    const filteredCountries = filterCountries(allCountries, countries);
 
-    return generateRegionalData(region, filteredCountries);
+    return utilities.renameCountryLabels(
+      allCountries.map(country => {
+        return utilities.convertAllKeysToString(
+          utilities.remapKeys(country, keyMapping)
+        );
+      })
+    );
   });
-};
-
-const filterCountries = (allCountries, countries) => {
-  const filteredCountries = allCountries.filter(country => {
-    return countries.includes(country.countryName);
-  });
-  return filteredCountries.map((country) => {
-    return utilities.convertAllKeysToString(utilities.remapKeys(country, keyMapping));
-  });
-};
-
-const generateRegionalData = (region, filteredCountries) => {
-  let regionTemplate = { ...globals.regionStructure };
-  regionTemplate.regionName = region;
-  regionTemplate.regions = utilities.renameCountryLabels(filteredCountries);
-  regionTemplate.regionTotal = utilities.convertAllKeysToString(
-    utilities.calculateRegionTotal(regionTemplate.regions)
-  );
-  return regionTemplate;
 };

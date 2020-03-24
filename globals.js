@@ -1,4 +1,10 @@
-exports.allRegions = [{
+exports.allRegions = [
+  {
+    name: "Africa",
+    sheetName: "Africa",
+    scraper: "coronatracker"
+  },
+  {
     name: "World",
     sheetName: "Global",
     startKey: "WORLD",
@@ -54,6 +60,7 @@ exports.displayOrder = [
   "China",
   "Canada",
   "Australia",
+  "Africa",
   "LatinAmerica"
 ];
 
@@ -156,17 +163,26 @@ exports.countryLists = {
 
 exports.AlternativeLabelNames = {
   "Bosnia and Herzegovina": "Bosnia",
-  "Brasil": "Brazil",
-  "Czechia": "Czech Republic",
-  "México": "Mexico",
-  "Panamá": "Panama",
+  Brasil: "Brazil",
+  Czechia: "Czech Republic",
+  México: "Mexico",
+  Panamá: "Panama",
   "Rep. Dominicana": "Dominican Republic"
-}
+};
 
 exports.regionStructure = {
   regionName: "",
   regions: [],
-  regionTotal: {}
+  regionTotal: {
+    country: "TOTAL",
+    cases: "",
+    deaths: "",
+    recovered: "",
+    serious: "",
+    critical: "",
+    todayCases: "",
+    todayDeaths: ""
+  }
 };
 
 exports.countryStructure = {
@@ -180,4 +196,5 @@ exports.countryStructure = {
   todayDeaths: ""
 };
 
-exports.CSV_URL = 'https://docs.google.com/spreadsheets/d/14dnT6yUxZiHWvPaEiWsOKu1xPQ_xwkuuUDfMGmFHinc/gviz/tq?tqx=out:csv&sheet=';
+exports.CSV_URL =
+  "https://docs.google.com/spreadsheets/d/14dnT6yUxZiHWvPaEiWsOKu1xPQ_xwkuuUDfMGmFHinc/gviz/tq?tqx=out:csv&sheet=";

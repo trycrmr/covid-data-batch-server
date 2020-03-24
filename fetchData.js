@@ -37,39 +37,34 @@ exports.fetchAllData = async () => {
           allData["Global"].regions
         ));
 
-      allData["Africa"] = globals.regionStructure;
-      allData["Africa"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Africa"])
+      allData["Africa"] = {...globals.regionStructure};
+      allData["Africa"].regionName = "Africa"
+      allData["Africa"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Africa"]);
 
-      console.log(allData["Africa"]);
+      allData["Europe"] = {...globals.regionStructure};
+      allData["Europe"].regionName = "Europe"
+      allData["Europe"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Europe"]);
 
-      allData["Europe"] = globals.regionStructure;
-      allData["Europe"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Europe"])
     })
     .then(() => {
       // Sync coronatracker data and BNO data.
-
-
       coronatrackerScraper
         .fetchData()
         .then(coronatrackerData => {
           let europeanRegions = []
           let africaRegions = []
 
-          // TODO: Filter for african region
-
-          europeanRegions,
-            (allData["Europe"].regions = utilities.syncTwoRegions(
+          allData["Europe"].regions ,
+            (europeanRegions = utilities.syncTwoRegions(
               utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Europe"]),
               allData["Europe"].regions
             ));
 
-          africaRegions,
-            (allData["Africa"].regions = utilities.syncTwoRegions(
+          allData["Africa"].regions,
+            (africaRegions = utilities.syncTwoRegions(
               utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Africa"]),
               allData["Africa"].regions
             ));
-
-          console.log(allData["Africa"]);
 
             gatherAllOverrides(allData);
         })

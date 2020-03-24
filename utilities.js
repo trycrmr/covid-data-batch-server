@@ -86,7 +86,9 @@ exports.convertAllKeysToString = object => {
 };
 
 exports.pullCountriesFromRegion = (regions, countryList)=> {
-  return regions.filter(country => countryList.includes(country.country))
+  return regions.filter(country => {
+    return countryList.includes(country.country)
+  })
 }
 
 exports.calculateRegionTotal = regions => {
