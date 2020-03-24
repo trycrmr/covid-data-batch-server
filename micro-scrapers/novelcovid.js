@@ -7,7 +7,7 @@ const keyMapping = {
   country: "country",
   cases: "cases",
   deaths: "deaths",
-  recovered: "recovered",
+  recovered_old: "recovered",
   todayCases: "todayCases",
   todayDeaths: "todayDeaths"
 };
@@ -15,7 +15,7 @@ const stateKeyMapping = {
   country: "state",
   cases: "cases",
   deaths: "deaths",
-  recovered: "recovered",
+  recovered_old: "recovered",
   todayCases: "todayCases",
   todayDeaths: "todayDeaths"
 };
