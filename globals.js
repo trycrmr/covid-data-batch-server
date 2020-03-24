@@ -166,7 +166,8 @@ exports.AlternativeLabelNames = {
   "Czech Republic": "Czechia",
   México: "Mexico",
   Panamá: "Panama",
-  "Rep. Dominicana": "Dominican Republic"
+  "Rep. Dominicana": "Dominican Republic",
+  Kyrgyzstan: "Kyrgyz Republic"
 };
 
 exports.regionStructure = {
