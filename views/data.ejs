@@ -161,35 +161,28 @@
                 </tr>
               </thead>
               <tbody>
+              </tbody>
+            </table>
+          </div>
+
+          <div id="container_mobile_Saved" class="container--wrap col hide-desktop">
+            <div class="sorted-table__header">
+              <div class="sorted-table__container">
+                <h2>Saved Locations</h2>
+              </div>
+            </div>
+            <table id="sortable_table_mobile_Saved" class="saved-table display compact responsive">
+              <thead>
                 <tr>
-                  <td class="text--gray">
-                    TOTAL
-                  </td>
-                  <td class="text--green">
-                    lol
-                  </td>
-                  <td class="text--green">
-                    lol
-                  </td>
-                  <td class="text--green">
-                    lol
-                  </td>
-                  <td class="text--red">
-                    lol
-                  </td>
-                  <td class="text--red">
-                    lol
-                  </td>
-                  <td class="text--red">
-                    lol
-                  </td>
-                  <td class="text--blue">
-                    lol
-                  </td>
-                  <td class="text--yellow">
-                    lol
-                  </td>
+                  <th class="text--gray">Name</th>
+                  <th class="text--gray">Confirmed</th>
+                  <th class="text--gray">Percentage Day Change</th>
+                  <th class="text--gray">Deceased</th>
+                  <th class="text--gray">Percentage Death Change</th>
+                  <th class="text--gray">Recovered</th>
                 </tr>
+              </thead>
+              <tbody>
               </tbody>
             </table>
           </div>
@@ -380,7 +373,11 @@
                 <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
                   <td class="text--gray">
-                    <span class="favorite-row" data-region="<%= region %>" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <% if (region === "USA") { %>
+                      <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <%} else { %>
+                      <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <% } %>
                     <%= data[region].regions[i].country %>
                   </td>
                   <td class="text--green">
