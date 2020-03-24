@@ -51,8 +51,8 @@ exports.fetchAllData = async () => {
       coronatrackerScraper
         .fetchData()
         .then(coronatrackerData => {
-          let europeanRegions = []
-          let africaRegions = []
+          let europeanRegions = utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Europe"]);
+          let africaRegions = utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Africa"]);
 
           allData["Europe"].regions ,
             (europeanRegions = utilities.syncTwoRegions(
