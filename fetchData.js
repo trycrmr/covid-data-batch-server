@@ -47,20 +47,22 @@ exports.fetchAllData = async () => {
               allData["Europe"].regions,
               allData["Global"].regions
             ));
-        })
-        .then(() => {
-          // Sync USA data and CNN data.
-          cnnScraper.fetchData().then(cnnData => {
-            cnnData,
-              (allData["USA"].regions = utilities.syncTwoRegions(
-                cnnData,
-                allData["USA"].regions
-              ));
 
-            // Sync with Overrides and write final finals.
             gatherAllOverrides(allData);
-          });
-        });
+        })
+        // .then(() => {
+        //   // Sync USA data and CNN data.
+        //   cnnScraper.fetchData().then(cnnData => {
+        //     cnnData,
+        //       (allData["USA"].regions = utilities.syncTwoRegions(
+        //         cnnData,
+        //         allData["USA"].regions
+        //       ));
+        //
+        //     // Sync with Overrides and write final finals.
+        //
+        //   });
+        // });
     });
 };
 
