@@ -636,7 +636,7 @@ table.dataTable.compact thead.total_row th {
 }
 
 .save-button:hover {
-  color: red;
+  color: #ffc14f;
 }
 .save-button[data-status="selected"] {
   color: orange;

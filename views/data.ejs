@@ -161,7 +161,7 @@
       <div class="col col-lg-9 tables">
         <div class="row m-0">
 
-          <div id="container_Saved" class="container--wrap col hide-mobile">
+          <div id="container_Saved" class="container--wrap col hide-mobile" style="display: none;">
             <div class="sorted-table__header">
               <div class="sorted-table__container">
                 <h2>Saved</h2>
@@ -684,6 +684,16 @@
       }
 
       var handleSelectingSavedRow = function(event) {
+        if (!window.localStorage) return;
+        if (window.innerWidth >= mobileBreakpoint) {
+          $('#container_Saved').css({
+            'display': 'block'
+          })
+        } else {
+          $('#container_mobile_Saved').css({
+            'display': 'block'
+          })
+        }
         event.preventDefault();
         if (!window.localStorage) return;
 
@@ -724,8 +734,10 @@
 
         savedRows.push(rowData)
         localStorage.setItem('germtracker', JSON.stringify(savedRows));
-        if(getSavedRows().length) {
-          $(activeSavedContainerId()).css({'display': 'block'})
+        if (getSavedRows().length) {
+          $(activeSavedContainerId()).css({
+            'display': 'block'
+          })
         }
       }
 
@@ -736,16 +748,14 @@
         })
 
         localStorage.setItem('germtracker', JSON.stringify(remainingRows));
-        if(!getSavedRows().length) {
-          $(activeSavedContainerId()).css({'display': 'none'})
+        if (!getSavedRows().length) {
+          $(activeSavedContainerId()).css({
+            'display': 'none'
+          })
         }
       }
 
       var addAllRows = function() {
-        if(getSavedRows().length) {
-          $(activeSavedContainerId()).css({'display': 'block'})
-        }
-
         getSavedRows().forEach(row => {
           addRow(row)
         })
@@ -775,13 +785,13 @@
       var topPoistion = (region) => {
         return $('#container_mobile_' + region).offset().top - 250
       }
-      var showRegionTotal = (region, showTotalBar=true) => {
+      var showRegionTotal = (region, showTotalBar = true) => {
         $dropdownLabel.text(region);
         $('.show-element').removeClass('show-element')
 
         $('.sort-copy').addClass('show-element')
         $('#mobile-nav-legend_' + region).addClass('show-element')
-        if(showTotalBar) $('#mobile-nav-total_' + region).addClass('show-element')
+        if (showTotalBar) $('#mobile-nav-total_' + region).addClass('show-element')
       }
 
       var handleCategorySort = function() {
@@ -837,7 +847,7 @@
         } else if (scrollPosition > topPoistion(displayOrder[1])) {
           showRegionTotal(displayOrder[1])
         } else if (scrollPosition > topPoistion('Saved')) {
-          if($('#container_mobile_Saved').is(':visible')) showRegionTotal('Saved', false)
+          if ($('#container_mobile_Saved').is(':visible')) showRegionTotal('Saved', false)
         } else if (scrollPosition > 60) {
           handleCategorySort();
           $('.show-element').removeClass('show-element')
