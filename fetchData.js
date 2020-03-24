@@ -36,19 +36,40 @@ exports.fetchAllData = async () => {
           allData["LatinAmerica"].regions,
           allData["Global"].regions
         ));
+
+      allData["Africa"] = globals.regionStructure;
+      allData["Africa"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Africa"])
+
+      console.log(allData["Africa"]);
+
+      allData["Europe"] = globals.regionStructure;
+      allData["Europe"].regions = utilities.pullCountriesFromRegion(allData["Global"].regions, globals.countryLists["Europe"])
     })
     .then(() => {
       // Sync coronatracker data and BNO data.
-      coronatrackerScraper
-        .getSelectedCountries("Europe", globals.countryLists["Europe"])
-        .then(europeanData => {
-          allData["Europe"] = europeanData;
 
-          allData["Europe"].regions,
-            (allData["Global"].regions = utilities.syncTwoRegions(
-              allData["Europe"].regions,
-              allData["Global"].regions
+
+      coronatrackerScraper
+        .fetchData()
+        .then(coronatrackerData => {
+          let europeanRegions = []
+          let africaRegions = []
+
+          // TODO: Filter for african region
+
+          europeanRegions,
+            (allData["Europe"].regions = utilities.syncTwoRegions(
+              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Europe"]),
+              allData["Europe"].regions
             ));
+
+          africaRegions,
+            (allData["Africa"].regions = utilities.syncTwoRegions(
+              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Africa"]),
+              allData["Africa"].regions
+            ));
+
+          console.log(allData["Africa"]);
 
             gatherAllOverrides(allData);
         })

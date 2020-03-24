@@ -85,6 +85,10 @@ exports.convertAllKeysToString = object => {
   return object;
 };
 
+exports.pullCountriesFromRegion = (regions, countryList)=> {
+  return regions.filter(country => countryList.includes(country.country))
+}
+
 exports.calculateRegionTotal = regions => {
   let regionTotalTemplate = { ...globals.countryStructure };
   let allConfirmed = [];
