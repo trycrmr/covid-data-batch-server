@@ -265,7 +265,11 @@
                 <% if (data[region].regions[i].country != "TBD") { %>
                 <tr>
                   <td class="text--gray">
-                    <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <% if (region === "USA") { %>
+                      <span class="save-button" data-status="unselected" data-type="state" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <%} else { %>
+                      <span class="save-button" data-status="unselected" data-type="country" data-name="<%= data[region].regions[i].country %>">&#9733;</span>
+                    <% } %>
                     <%= data[region].regions[i].country %>
                   </td>
 
@@ -603,7 +607,11 @@
 
 
       var savedTable = $('#sortable_table_Saved').DataTable(config);
-      //var favoritesMobileTable = $('#sortable_table_mobile_Favorites').DataTable(mobileConfig);
+      var savedMobileTable = $('#sortable_table_mobile_Favorites').DataTable(mobileConfig);
+
+      var activeSavedTale = function() {
+        return $('#sortable_table_Saved').is(':visible') ? savedTable : savedMobileTable
+      }
 
       var handleRemovingOwnRow = function (event) {
         event.preventDefault();
@@ -700,7 +708,8 @@
       }
 
       var addRow = function(rowData) {
-        $(`[data-name="${rowData.name}"][data-name="${rowData.name}"]`).click()
+        let prefix = rowData.type === "state" ? '#sortable_table_USA' : ''
+        $(`${prefix} [data-name="${rowData.name}"][data-name="${rowData.name}"]`).first().click()
       }
 
       addAllRows();
