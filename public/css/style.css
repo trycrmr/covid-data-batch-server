@@ -588,6 +588,13 @@ table.dataTable.compact thead.total_row th {
   padding-bottom: 10px;
 }
 
+@media only screen and (max-width: 980px) {
+  .sorted-table__header h2 {
+    margin: 0;
+    padding: 0;
+  }
+}
+
 .sorted-table__container {
   width: 100%;
   display: flex;
@@ -595,6 +602,11 @@ table.dataTable.compact thead.total_row th {
 }
 
 @media only screen and (max-width: 980px) {
+  table.dataTable.compact thead th,
+  table.dataTable.compact thead td {
+    padding: 0;
+  }
+
   table.dataTable.display tbody tr.odd:first-of-type,
   table.dataTable.display tbody tr:first-of-type {
     font-weight: normal;
@@ -616,4 +628,22 @@ table.dataTable.compact thead.total_row th {
     padding: 0 10px;
     width: 100%;
   }
+}
+
+.save-button {
+  padding-right: 10px;
+  cursor: pointer
+}
+
+.save-button:hover {
+  color: #ffc14f;
+}
+
+.star,
+.save-button[data-status="selected"] {
+  color: orange;
+}
+
+.saved-table .save-button {
+  color: orange;
 }
