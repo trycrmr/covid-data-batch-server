@@ -604,9 +604,9 @@
 
 
       var savedTable = $('#sortable_table_Saved').DataTable(config);
-      var savedMobileTable = $('#sortable_table_mobile_Favorites').DataTable(mobileConfig);
+      var savedMobileTable = $('#sortable_table_mobile_Saved').DataTable(mobileConfig);
 
-      var activeSavedTale = function() {
+      var activeSavedTable = function() {
         return $('#sortable_table_Saved').is(':visible') ? savedTable : savedMobileTable
       }
 
@@ -620,8 +620,8 @@
           name: $saveButton.data('name'),
           type: $saveButton.data('type')
         }
-
-        savedTable.row($currentRow).remove().draw();
+          console.log('lol');
+        activeSavedTable().row($currentRow).remove().draw();
         $(`.save-button[data-name="${rowData.name}"][data-name="${rowData.name}"]`).attr("data-status", "unselected")
 
         removeRow(rowData)
@@ -639,7 +639,7 @@
         }
 
         var $targetRow = $(`#sortable_table_Saved [data-name="${rowData.name}"][data-name="${rowData.name}"]`).closest("tr")
-        savedTable.row($targetRow).remove().draw();
+        activeSavedTable().row($targetRow).remove().draw();
 
         $saveButton.attr('data-status', 'unselected')
 
@@ -657,13 +657,13 @@
         var data = $currentTable.DataTable().row($currentRow).data();
         $saveButton.attr('data-status', 'selected')
 
-        savedTable.row.add(data).draw();
+        activeSavedTable().row.add(data).draw();
         saveRow({
           name: $saveButton.data('name'),
           type: $saveButton.data('type')
         })
       }
-      $("#sortable_table_Saved").on('click', '.save-button', handleRemovingOwnRow);
+      $(".saved-table").on('click', '.save-button', handleRemovingOwnRow);
       $("table:not(.saved-table)").on('click', '.save-button[data-status="selected"]', handleUnselectingSavedRow);
       $("table:not(.saved-table)").on('click', '.save-button[data-status="unselected"]', handleSelectingSavedRow);
 
