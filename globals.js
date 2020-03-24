@@ -57,11 +57,11 @@ exports.displayOrder = [
   "Global",
   "USA",
   "Europe",
-  "China",
   "Africa",
+  "LatinAmerica",
+  "China",
   "Canada",
-  "Australia",
-  "LatinAmerica"
+  "Australia"
 ];
 
 exports.countryLists = {
