@@ -56,13 +56,13 @@ exports.fetchAllData = async () => {
 
           allData["Europe"].regions ,
             (europeanRegions = utilities.syncTwoRegions(
-              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Europe"]),
+              europeanRegions,
               allData["Europe"].regions
             ));
 
           allData["Africa"].regions,
             (africaRegions = utilities.syncTwoRegions(
-              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Africa"]),
+              africaRegions,
               allData["Africa"].regions
             ));
 

@@ -471,15 +471,13 @@ input:focus~label, textarea:focus~label, input:valid~label
   min-height: 15em;
 }
 
-.container--scroll {
-  height: 500px;
-  overflow: scroll;
-}
-
+.data tbody td,
 table.dataTable tbody td {
   font-size: 14px;
 }
 
+
+.data thead th,
 table.dataTable thead th {
   padding: 5px;
   font-size: 12px;
@@ -616,7 +614,7 @@ table.dataTable.compact thead.total_row th {
     visibility: hidden;
   }
 
-  td,th,
+  td, th,
   table.dataTable tbody td {
     font-size: 12px;
   }
