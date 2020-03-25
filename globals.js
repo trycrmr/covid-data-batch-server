@@ -124,7 +124,7 @@ exports.countryLists = {
     "Eswatini",
     "Ethiopia",
     "Gabon",
-    "Gambia",
+    "The Gambia",
     "Ghana",
     "Guinea",
     "Guinea-Bissau",
