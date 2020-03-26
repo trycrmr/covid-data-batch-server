@@ -167,7 +167,9 @@ exports.AlternativeLabelNames = {
   México: "Mexico",
   Panamá: "Panama",
   "Rep. Dominicana": "Dominican Republic",
-  Kyrgyzstan: "Kyrgyz Republic"
+  Kyrgyzstan: "Kyrgyz Republic",
+  UK: "United Kingdom",
+  "S. Korea": "South Korea"
 };
 
 exports.regionStructure = {
