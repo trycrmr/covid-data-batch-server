@@ -167,7 +167,28 @@ exports.AlternativeLabelNames = {
   México: "Mexico",
   Panamá: "Panama",
   "Rep. Dominicana": "Dominican Republic",
-  Kyrgyzstan: "Kyrgyz Republic"
+  Kyrgyzstan: "Kyrgyz Republic",
+  UK: "United Kingdom",
+  "S. Korea": "South Korea",
+  "Iran, Islamic Republic of": "Iran",
+  "UAE": " United Arab Emirates",
+  "Macedonia, the former Yugoslav Republic of": "North Macedonia",
+  "Viet Nam": "Vietnam",
+  "Moldova, Republic of": "Moldova",
+  "Venezuela, Bolivarian Republic of": "Venezuela",
+  "Palestinian Territory, Occupied": "Palestine",
+  "Coast D'Ivoire": "Ivory Coast",
+  "Congo, the Democratic Republic of the": "DR Congo",
+  "Cyrpus": "Northern Cyprus",
+  "Macao": "Macau",
+  "Tanzania": "Tanzania, United Republic of",
+  "Syrian Arab Republic": "Syria",
+  "Holy See (Vatican City State)": "Vatican City",
+  "The Gambia": "Gambia",
+  "Saint Kitts and Nevis": "St. Kitts and Nevis",
+  "Libyan Arab Jamahiriya": "Libya",
+  
+
 };
 
 exports.regionStructure = {
