@@ -56,13 +56,13 @@ exports.fetchAllData = async () => {
 
           allData["Europe"].regions ,
             (europeanRegions = utilities.syncTwoRegions(
-              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Europe"]),
+              europeanRegions,
               allData["Europe"].regions
             ));
 
           allData["Africa"].regions,
             (africaRegions = utilities.syncTwoRegions(
-              utilities.pullCountriesFromRegion(coronatrackerData, globals.countryLists["Africa"]),
+              africaRegions,
               allData["Africa"].regions
             ));
 
@@ -115,15 +115,15 @@ const syncWithAllCountryList = allData => {
 
       allData[region].regions = calculatePercentages(allData[region].regions);
 
-      const tempTotal = allData["USA"].regionTotal
+      const tempUSATotal = allData["USA"].regionTotal.cases
+      const tempGlobalTotal = allData["Global"].regionTotal.cases
 
-      if(region !== "Global") {
-        allData[region].regionTotal = utilities.calculateRegionTotal(
-          allData[region].regions
-        );
-      }
+      allData[region].regionTotal = utilities.calculateRegionTotal(
+        allData[region].regions
+      );
 
-      allData["USA"].regionTotal = tempTotal
+      allData["USA"].regionTotal.cases = tempUSATotal
+      allData["Global"].regionTotal.cases = tempGlobalTotal
     });
     return allData;
   });
@@ -151,36 +151,14 @@ const gatherAllOverrides = allData => {
     });
 
     syncWithAllCountryList(allData).then(allSyncedData => {
-      allSyncedData["Global"].regionTotal.todayCases = "0";
-      allSyncedData["Global"].regionTotal.todayDeaths = "0";
-
       allSyncedData["Global"].regions.map((region, index) => {
         if (region.country === "United States") {
-          (allSyncedData["USA"].recoveryRate = utilities.calculatePercentage(
-            allSyncedData["USA"].regionTotal.recovered,
-            allSyncedData["USA"].regionTotal.cases,
-            true,
-            false
-          )),
-            (allSyncedData[
-              "USA"
-            ].regionTotal.todayDeathRate = utilities.calculatePercentage(
-              allSyncedData["USA"].regionTotal.todayDeaths,
-              allSyncedData["USA"].regionTotal.deaths,
-              false,
-              true
-            )),
-            (allSyncedData[
-              "USA"
-            ].regionTotal.todayCaseRate = utilities.calculatePercentage(
-              allSyncedData["USA"].regionTotal.todayCases,
-              allSyncedData["USA"].regionTotal.cases,
-              false,
-              true
-            ));
 
-          allSyncedData["Global"].regions[index] =
-            allSyncedData["USA"].regionTotal;
+          allSyncedData["USA"].regionTotal.recoveryRate = utilities.calculatePercentage(allSyncedData["USA"].regionTotal.recovered, allSyncedData["USA"].regionTotal.cases, true, false)
+          allSyncedData["USA"].regionTotal.todayDeathRate = utilities.calculatePercentage(allSyncedData["USA"].regionTotal.todayDeaths, allSyncedData["USA"].regionTotal.deaths, false, true)
+          allSyncedData["USA"].regionTotal.todayCaseRate = utilities.calculatePercentage(allSyncedData["USA"].regionTotal.todayCases, allSyncedData["USA"].regionTotal.cases, false, true)
+
+          allSyncedData["Global"].regions[index] = allSyncedData["USA"].regionTotal;
           allSyncedData["Global"].regions[index].country = "United States";
         }
       });
