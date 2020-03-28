@@ -6,7 +6,7 @@ const stats = require("./fetchData");
 const sync = require("./syncData");
 const time = require("./getTime");
 const globals = require("./globals");
-const graphData = require("./tmp/statistics_graph.json");
+// const graphData = require("./tmp/statistics_graph.json");
 const cors = require('cors')
 const sizeOf = require('object-sizeof')
 
