@@ -7,22 +7,30 @@ const sync = require("./syncData");
 const time = require("./getTime");
 const globals = require("./globals");
 const graphData = require("./tmp/statistics_graph.json");
+const cors = require('cors')
+const sizeOf = require('object-sizeof')
 
 const getContent = (res, view) => {
   sync.gatherAllRegions().then(data => {
-    res.render(view, {
-      data: {
-        ...data,
-        lastUpdated: 'a few seconds ago',
-        displayOrder: globals.displayOrder
+    if(view) {
+      res.render(view, {
+        data: {
+          ...data,
+          lastUpdated: 'a few seconds ago',
+          displayOrder: globals.displayOrder
+        }
+      });
+    } else {
+      console.info(`${Math.ceil(sizeOf(data) / 1024)}kb of data incoming`)
+      res.json(data)
     }
-    });
   }).catch(error => {
     console.error(error)
   })
 };
 
 const app = express();
+app.use(cors())
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
@@ -38,6 +46,7 @@ app.get("/wiki", (req, res) => res.render("coronainfo"));
 app.get("/travel", (req, res) => res.render("travel"));
 app.get("/press", (req, res) => res.render("press"));
 app.get("/email", (req, res) => res.render("email"));
+app.get("/api", (req, res) => getContent(res));
 
 app.get("/graphs", (req, res) => res.render("graphs"));
 
