@@ -1,30 +1,34 @@
 {
   "name": "covid-data-batch-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Originally forked from ncov2019.live before that repo went private. This codebase is a refactored codebase of that to not serve web pages, but just update the a COVID-19 data source at a certain interval and save it somewhere.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trycrmr/covid-data-batch-server"
+  },
   "main": "index.js",
   "scripts": {
-    "server": "node index.js"
+    "dev": "npm i && node index.js"
   },
   "keywords": [],
-  "author": "All contributors",
+  "author": "See contributors",
+  "contributors": [
+    {
+      "name": "Contributors",
+      "url": "https://github.com/trycrmr/covid-data-batch-server/graphs/contributors"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.648.0",
-    "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
-    "cors": "^2.8.5",
-    "csvtojson": "^2.0.10",
+    "aws-sdk": "2.651.0",
+    "axios": "0.19.2",
+    "cheerio": "1.0.0-rc.3",
+    "csvtojson": "2.0.10",
     "debounce-async": "0.0.2",
-    "ejs": "^3.0.1",
-    "express": "^4.17.1",
-    "moment": "^2.24.0",
-    "mongoose": "^5.8.10",
-    "node-cron": "^2.0.3",
-    "nodemon": "^2.0.2",
-    "novelcovid": "^1.0.4",
-    "object-sizeof": "^1.5.3",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.5"
+    "moment": "2.24.0",
+    "node-cron": "2.0.3",
+    "novelcovid": "1.1.0",
+    "request": "2.88.2",
+    "request-promise": "4.2.5"
   }
 }
