@@ -1,5 +1,6 @@
 const axios = require("axios");
-let covid = require("novelcovid");
+const Covid = require("novelcovid").NovelCovid;
+let covid = new Covid()
 const utilities = require("../utilities");
 
 const URL = "https://corona.lmao.ninja/states";
