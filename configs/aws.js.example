@@ -1,0 +1,23 @@
+module.exports = {
+  aws: {
+    creds: {
+      accessKeyId: '',
+      secretAccessKey: '',
+      region: '', // example us-east-1
+      sslEnabled: true // sure, why not
+    },
+    s3: {
+      apiVersion: '2006-03-01',
+      getParams: data => {
+        return {
+          Body: JSON.stringify(data), 
+          Bucket: "", // your S3 bucket's name
+          Key: "", // example data.json
+          ContentType: "application/json",
+          // ServerSideEncryption: "AES256", ¯\_(ツ)_/¯ Data is meant to be public in this app eventually anyways, so left unencrpyted to avoid bugs from dealing with encrypted objects, but default in 99% of situations is to encrypt the data in the S3 bucket. My fear might be irrational, but I don't want to find out it isn't, so left unencrpyted. Make your own choices for your context.
+          StorageClass: "STANDARD"
+        }
+      }
+    }
+  }
+}
