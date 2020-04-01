@@ -1,16 +1,12 @@
-# 🦠 Coronavirus-Dashboard
-This is a website I made to track the ongoing Coronavirus (nCov2019)
-[Live Site](https://ncov2019.live/)
+# COVID-19 batch server
+Originally forked from [ncov2019.live](https://ncov2019.live/) before that repo went private. This codebase is a refactored codebase of that to not serve web pages, but just update the a COVID-19 data source at a certain interval and save it somewhere. 
 
-## Installing
-You need to use either NPM install or Yarn add to add the dependencies.
-
-## Contributing
-Please feel free to submit any contributions, right now I am mainly trying to set up graphs
-
-## Pictures
-![Figure 1](https://github.com/avischiffmann/Coronavirus-Dashboard/blob/master/figure1.png)
-![Figure 2](https://github.com/avischiffmann/Coronavirus-Dashboard/blob/master/figure2.png)
-![Figure 3](https://github.com/avischiffmann/Coronavirus-Dashboard/blob/master/figure3.png)
-![Figure 4](https://github.com/avischiffmann/Coronavirus-Dashboard/blob/master/figure4.png)
+## Install / Code-contributions
+1. Fork the repo (click the button in the top right your Github interface)
+2. Clone the repo (SSH: `git clone git@github.com:trycrmr/covid-data-batch-server.git` or HTTPS: `git clone https://github.com/trycrmr/covid-data-batch-server.git`)
+3. Add git@github.com:trycrmr/covid-data-batch-server.git as an upstream repo (`git remote add upstream https://github.com/trycrmr/covid-data-batch-server.git`)
+4. [Download and install Node.js](https://nodejs.org/en/download/), and `npm ci` to install the dependencies. Run `node scraper.js` to execute the batch job.
+5. Create a new branch named on your forked repo with the following convention: "[issue-number][1-3 words summarizing the issue]" (Example: "19-new-covid-vaccine"). If an issue doesn't exist, open one, reference it, and start working on it. 
+6. Open all PRs into master of the upstream repo. Must maintain feature & performance parity. No PRs that vary from the branch naming convention or have merge conflicts with master will be accepted as well.
+7. Your PR will be reviewed shortly. In the meantime, repeat steps #5 & #6! 
 
