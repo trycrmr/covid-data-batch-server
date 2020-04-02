@@ -3,3 +3,6 @@ node_modules/
 !configs/
 configs/*
 !configs/aws.js.example
+
+# local dev scrap directory
+dev
