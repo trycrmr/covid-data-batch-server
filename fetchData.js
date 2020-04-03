@@ -4,7 +4,18 @@ const bnoScraper = require("./micro-scrapers/bno");
 const cnnScraper = require("./micro-scrapers/cnn");
 const novelcovid = require("./micro-scrapers/novelcovid");
 const coronatrackerScraper = require("./micro-scrapers/coronatracker");
+const jhucsseScraper = require("./micro-scrapers/jhucsse")
 const fs = require("fs");
+
+exports.fetchJHUData = async () => await jhucsseScraper.fetchData() /* returns 
+[
+  {
+    name: '-- name of the sheet as denoted in globals --', 
+    data: [
+      {-- column name in csv --: -- corresponding value in this row of the csv -- }
+    ]
+  }
+] */
 
 exports.fetchAllData = async () => {
   const allData = {};
