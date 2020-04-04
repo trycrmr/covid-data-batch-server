@@ -1,6 +1,6 @@
 const cron = require("node-cron");
 const stats = require("./fetchData");
-const saveToS3 = require("./save") // presumes JSON
+// const saveToS3 = require("./save") // presumes JSON
 const fs = require('fs')
 const sync = require('./syncData')
 const debounce = require('debounce-async').default // prevents several writes to S3 whenever any file under tmp/ changes. Holds up for ten seconds. If a change event is fired within those ten seconds the sync call from the last change event is cancelled.
@@ -34,19 +34,61 @@ const debounce = require('debounce-async').default // prevents several writes to
     */
     let jhuData = await stats.fetchJHUData()
     let firstSheet = jhuData[0]
+    console.debug(firstSheet.data[0])
 
-    const blah = firstSheet.data.reduce((acc, curr, currIdx, origArr) => {
-      let continent = 'North America'
-      let tmpLocation = `${curr.Country_Region} -- ${curr.Province_State}`
-      if(!acc.tmpLocation) {
-        acc[continent][tmpLocation] = { current: { cases: curr["4/2/20"] } }
-      } else {
-        acc.tmpLocation.current.cases = acc.tmpLocation.current.cases + curr["4/2/20"]
+    // Refactor current location array map thing to just reverse the "Combined_Key" value in the JHU object
+
+    const blah = firstSheet.data
+    .map(thisRow => { return { ...thisRow, continent: 'North America' }})
+    .map(thisRow => { return { ...thisRow, location: new Array(1).fill(thisRow.continent) }})
+    .map(thisRow => {thisRow.location = [...thisRow.location, thisRow.Country_Region]; return thisRow})
+    .map(thisRow => {thisRow.location = [...thisRow.location, thisRow.Province_State]; return thisRow})
+    .reduce((acc, curr, currIdx, origArr) => {
+      let superRegions = new Array(1).fill(acc) // last superRegion is the current region being used as the parent
+      let i = 0
+      while(curr.location.length > i) {
+        // console.info('i',i)
+        // console.info(superRegions[i])
+        // console.info('curr.location[i]', curr.location[i])
+        if(!superRegions[i][curr.location[i]]) { // if the subregion doesn't exist, create it. Or update totals of current region, push found subregion to superregions array, and bump search index
+          superRegions[i][curr.location[i]] = {
+            name: curr.location[i],
+            subregions: [],
+            totals: { current: +(curr["4/2/20"]) }
+          }
+          superRegions.push(superRegions[i][curr.location[i]])
+        } else {
+          // console.info('superRegions[i]', superRegions[i])
+          superRegions[i].totals.current += +(curr["4/2/20"])
+          superRegions.push(superRegions[i][curr.location[i]])
+        }
+        i++
       }
+      // console.debug(curr.location)
+      // if(!acc[curr.location[0]]) { // if the continent doesn't exist, create it
+      //   acc[curr.location[0]] = {
+      //     name: curr.location[0],
+      //     subregions: [],
+      //     totals: { current: 0 }
+      //   }
+      // } else {
+  
+      // }
+
+      // let tmpLocation = `${curr.Country_Region} -- ${curr.Province_State}`
+      // if(!acc.tmpLocation) {
+      //   acc[continent][tmpLocation] = { current: { cases: curr["4/2/20"] } }
+      // } else {
+      //   acc.tmpLocation.current.cases = acc.tmpLocation.current.cases + curr["4/2/20"]
+      // }
       return acc
-    }, { "North America": {} })
+    }, {
+      name: "Earth",
+      subregions: [],
+      totals: { current: 0 }
+    })
     
-    console.info(JSON.stringify(blah, null, 2))
+    // console.info(JSON.stringify(blah, null, 2))
     // console.info(JSON.stringify(jhuData, null, 2))
   } catch(err) {
     console.error(err)
