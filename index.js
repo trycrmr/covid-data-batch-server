@@ -4,92 +4,180 @@ const stats = require("./fetchData");
 const fs = require('fs')
 const sync = require('./syncData')
 const debounce = require('debounce-async').default // prevents several writes to S3 whenever any file under tmp/ changes. Holds up for ten seconds. If a change event is fired within those ten seconds the sync call from the last change event is cancelled.
+const globals = require('./globals');
 
 // const dSync = debounce(sync.gatherAllRegions, 10000)
 
-// for the first sheet
-  // get every day and the numbers for every location denoted. Region == 'region + all subregions' for now as a location key, but keep all the location data in the object (Ex. "Country_Region", "Province_State", etc.)
-  // create weekly aggregates for every concatenated location
-  // create monthly aggregates for every concatenated location
-  // create current aggregates for every concatenated location
-  // use concatenated locations to determine the current location mappings in JHU data
-  // Use the continent to country mappings to create the first iteration of nested location, then insert nested locations where necessary
-// start at the beginning until all sheets are done
 ( async() => {
   try {
     const allData = []
-    /* allData schema
-    [
-      {
-        name: 'region name' // top-level is going to be the seven continents
-        subregions: []
-        totals: {
-          current: { cases: #, deaths: #, start: date, end: date },
-          monthly: [{ cases: #, deaths: #, start: date, end: date }, ...] // each element is a full month since 1/22
-          weekly: [{ cases: #, deaths: #, start: date, end: date }, ...] // each element is a full week since 1/22
-          daily: [{ cases: #, deaths: #, start: date, end: date }, ...] // each element is each day since 1/22
-        }
-      }
-    ]
-    */
     let jhuData = await stats.fetchJHUData()
-    let firstSheet = jhuData[0]
-    console.debug(firstSheet.data[0])
 
-    // Refactor current location array map thing to just reverse the "Combined_Key" value in the JHU object
+    const removeNonDateKeys = obj => {
+      let newObj = {}
+      for (let [key, value] of Object.entries(obj)) {
+        if(Number.isInteger(Number.parseInt(key[0]))) newObj[key] = value // Suuure because if the first character can be parsed as a number it's a key that's a date. I know, don't @ me, this filtering could be more precise.
+      }
+      return newObj
+    }
+    jhuData = jhuData.map(thisJhu => thisJhu.data.map(thisRow => {
+      if(thisRow.iso2) return {
+        ...thisRow, 
+        continentISO2: globals.countryToContinentISO2[thisRow.iso2], 
+        continentName: globals.continentToNameISO2[globals.countryToContinentISO2[thisRow.iso2]],
+        countryName: globals.countryToNameISO2[thisRow.iso2],
+        metric: thisJhu.name === 'us_confirmed' || thisJhu.name === 'confirmed_global' ? 'cases' : 'deaths'
+        
+      }
+      if(thisRow["Country/Region"]) {
+        let hasMap = Object.entries(globals.countryToNameISO2).find(([, name]) => thisRow["Country/Region"] === name)
+        if(hasMap) {
+          return {
+            ...thisRow, 
+            countryISO2: hasMap[0],
+            continentName: globals.continentToNameISO2[globals.countryToContinentISO2[hasMap[0]]],
+            continentISO2: globals.countryToContinentISO2[hasMap[0]],
+            countryName: hasMap[1],
+            metric: thisJhu.name === 'us_confirmed' || thisJhu.name === 'confirmed_global' ? 'cases' : 'deaths'
+          }
+        } else { // Manual overrides because the country string provided by JHU does not match an ISO standard country name
+          return {
+            ...thisRow, 
+            ...globals.stringToISOMap[thisRow["Country/Region"]],
+            metric: thisJhu.name === 'us_confirmed' || thisJhu.name === 'confirmed_global' ? 'cases' : 'deaths'
+          }
+        }
+      } 
+    })).flat()
 
-    const blah = firstSheet.data
-    .map(thisRow => { return { ...thisRow, continent: 'North America' }})
-    .map(thisRow => { return { ...thisRow, location: new Array(1).fill(thisRow.continent) }})
-    .map(thisRow => {thisRow.location = [...thisRow.location, thisRow.Country_Region]; return thisRow})
-    .map(thisRow => {thisRow.location = [...thisRow.location, thisRow.Province_State]; return thisRow})
+    const newJHUData = jhuData
+    .map(thisRow => { return { ...thisRow, location: [ thisRow.continentName ] }})
+    .map(thisRow => { return { ...thisRow, location: [ ...thisRow.location, thisRow.countryName] }})
+    .map(thisRow => { return thisRow["Province_State"] && thisRow["Admin2"] ? { ...thisRow, location: [ ...thisRow.location, thisRow["Province_State"], thisRow["Admin2"]] } : { ...thisRow }})
+    .map(thisRow => { return thisRow["Province/State"] ? { ...thisRow, location: [ ...thisRow.location, thisRow["Province/State"]] } : { ...thisRow }})
     .reduce((acc, curr, currIdx, origArr) => {
-      let superRegions = new Array(1).fill(acc) // last superRegion is the current region being used as the parent
+      let superRegions = [ acc.Earth ] // last superRegion is the current region being used as the parent
       let i = 0
       while(curr.location.length > i) {
-        // console.info('i',i)
-        // console.info(superRegions[i])
-        // console.info('curr.location[i]', curr.location[i])
-        if(!superRegions[i][curr.location[i]]) { // if the subregion doesn't exist, create it. Or update totals of current region, push found subregion to superregions array, and bump search index
-          superRegions[i][curr.location[i]] = {
+        if(!superRegions[i].subregions[curr.location[i]]) { // if the subregion doesn't exist, create it. If it does, push found subregion to superregions array and bump search index.
+          superRegions[i].subregions[curr.location[i]] = {
+            getSuperRegion: () => { return superRegions[i] },
+            superRegionName: superRegions[i].name,
+            rolledUp: false,
             name: curr.location[i],
-            subregions: [],
-            totals: { current: +(curr["4/2/20"]) }
+            subregions: {},
+            totals: { daily: { cases: {}, deaths: {} } }
           }
-          superRegions.push(superRegions[i][curr.location[i]])
+          superRegions.push(superRegions[i].subregions[curr.location[i]])
         } else {
-          // console.info('superRegions[i]', superRegions[i])
-          superRegions[i].totals.current += +(curr["4/2/20"])
-          superRegions.push(superRegions[i][curr.location[i]])
+          superRegions.push(superRegions[i].subregions[curr.location[i]])
+        }
+        if(i + 1 === curr.location.length) { // If this is the last location (i.e. the most granular location data we have), update the appropriate metric.
+          superRegions[i].subregions[curr.location[i]].totals.daily[curr.metric] = removeNonDateKeys(curr)
         }
         i++
       }
-      // console.debug(curr.location)
-      // if(!acc[curr.location[0]]) { // if the continent doesn't exist, create it
-      //   acc[curr.location[0]] = {
-      //     name: curr.location[0],
-      //     subregions: [],
-      //     totals: { current: 0 }
-      //   }
-      // } else {
-  
-      // }
-
-      // let tmpLocation = `${curr.Country_Region} -- ${curr.Province_State}`
-      // if(!acc.tmpLocation) {
-      //   acc[continent][tmpLocation] = { current: { cases: curr["4/2/20"] } }
-      // } else {
-      //   acc.tmpLocation.current.cases = acc.tmpLocation.current.cases + curr["4/2/20"]
-      // }
       return acc
-    }, {
+    }, { Earth: {
       name: "Earth",
-      subregions: [],
-      totals: { current: 0 }
-    })
-    
-    // console.info(JSON.stringify(blah, null, 2))
-    // console.info(JSON.stringify(jhuData, null, 2))
+      rolledUp: false,
+      subregions: {},
+      superRegionName: null,
+      totals: { daily: { cases: {}, deaths: {} } }
+    }})
+
+    const findLocation = (str, obj) => {
+      let match = null
+      if(str === obj.name) {
+        match = obj
+        return match
+      }
+      if(Object.entries(obj.subregions).length > 0) {
+        for (let [key, thisSubregion] of Object.entries(obj.subregions)) {
+          match = findLocation(str, thisSubregion)
+          if(!match) {
+            // do nothing
+          } else {
+            return match
+          }
+        }
+      }
+      return match
+    }
+
+    const calcAggs = async location => {
+      if(location) { // null/undefined/etc check
+        if(location.rolledUp) return location
+      } else {
+        return location
+      }
+//       console.debug(`
+// ${location.name} (${location.superRegionName})
+// ${Object.entries(location.subregions).length} (subregion count)
+// ${!location.rolledUp} & ${Object.entries(location.subregions).every(([key, value]) => value.rolledUp)} (is not rolled up & subregions are rolled up)`)
+// ^Leaving in for debugging purposes
+      if(!location.subregions) {
+        location.rolledUp = true
+        return location
+      } else {
+        const sum = async (num1, num2) => { // synchronous sum function. I was getting a little paranoid at this script running in a strange order.  
+          num1 = +(num1) || 0 // Casts the value passed to a Number. If it's a falsey value just assign it zero. 
+          num2 = +(num2) || 0
+          return num1 + num2 
+        }
+
+        while(true) {
+          for (let [key, value] of Object.entries(location.subregions)) {
+            await calcAggs(value) // Basically, roll up all the subregions, then continue. Don't process other things until the subregions are finished processing. The subregions won't finish until their subregions are 
+          }
+          if(Object.entries(location.subregions).every(([key, value]) => value.rolledUp)) {
+            break
+          }
+        }
+
+        let subregionKeys = Object.keys(location.subregions)
+        let i = 0
+        while(i < subregionKeys.length) {
+          let caseDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.cases)
+          let deathDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.deaths)
+          while(caseDatesLeft.length > 0 && deathDatesLeft.length > 0) {
+            let thisCasesKey = caseDatesLeft.pop()
+            let thisDeathKey = deathDatesLeft.pop()
+            if(Object.keys(location.totals.daily.cases).length === 0) {
+              location.totals.daily.cases[thisCasesKey] = +(location.subregions[subregionKeys[i]].totals.daily.cases[thisCasesKey]) || 0
+            } else {
+              location.totals.daily.cases[thisCasesKey] = await sum(location.totals.daily.cases[thisCasesKey], +(location.subregions[subregionKeys[i]].totals.daily.cases[thisCasesKey])) 
+            }
+            if(Object.keys(location.totals.daily.deaths).length === 0) {
+              location.totals.daily.deaths[thisDeathKey] = +(location.subregions[subregionKeys[i]].totals.daily.deaths[thisDeathKey]) || 0
+            } else {
+              location.totals.daily.deaths[thisDeathKey] = await sum(location.totals.daily.deaths[thisDeathKey], +(location.subregions[subregionKeys[i]].totals.daily.deaths[thisDeathKey])) 
+            }
+          }
+          i++
+        }
+        location.rolledUp = true
+        return location
+      }
+    }
+
+    const jhuDataAggregated = await calcAggs(newJHUData.Earth)
+    /* calcAggs schema
+{
+  name: 'Earth',
+  rolledUp: true,
+  subregions: { // The continents and their "subregions" (i.e. countries)}
+  },
+  superRegionName: null,
+  totals: { daily: { cases: { // Object with date: aggregate counts as key: value pairs from January 22nd }, deaths: { // Object with date: aggregate counts as key: value pairs from January 22nd } } }
+}
+
+    */
+
+    console.info(`
+${JSON.stringify(jhuDataAggregated)}`)
+// ^Leaving in for debugging purposes. Current output. Something like this will be served to the browser. 
+
   } catch(err) {
     console.error(err)
   } 
