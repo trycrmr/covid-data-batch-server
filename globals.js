@@ -248,6 +248,7 @@ exports.countryISO2TocountryISO3 = {"BD": "BGD", "BE": "BEL", "BF": "BFA", "BG":
 
 exports.stringToISOMap = {
   "Cabo Verde": {
+    countryName: "Cape Verde", 
     countryISO2: "CV",
     continentISO2: "AF",
     continentName: "Africa"
@@ -267,68 +268,83 @@ exports.stringToISOMap = {
     "Province/Name": "Kinshasa"
   },
   "Cote d'Ivoire": {
+    countryName: "Côte d'Ivoire",
     countryISO2: "CI",
     continentISO2: "AF",
     continentName: "Africa"
   },
   "Diamond Princess": {
+    countryName: null,
     countryISO2: null,
     continentISO2: null,
     continentName: "Diamond Princess"
   },
   "Czechia": {
+    countryName: "Czechia",
     countryISO2: "CZ",
     continentISO2: "EU",
     continentName: "Europe"
   },
   "Eswatini": {
+    countryName: "Swaziland",
     countryISO2: "SZ",
     continentISO2: "AF",
     continentName: "Africa"
   },
   "Holy See": {
+    countryName: "Vatican",
     countryISO2: "VA",
     continentISO2: "EU",
     continentName: "Europe"
   },
   "Korea, South": {
+    countryName: "South Korea",
     countryISO2: "KR",
     continentISO2: "AS",
     continentName: "Asia"
   },
   "North Macedonia": {
+    countryName: "Macedonia",
     countryISO2: "MK",
     continentISO2: "EU",
     continentName: "Europe"
   },
   "Taiwan*": {
+    countryName: "Taiwan",
     countryISO2: "TW",
     continentISO2: "AS",
     continentName: "Asia"
   },
   "US": {
+    countryName: "United States",
     countryISO2: "US",
     continentISO2: "NA",
     continentName: "North America"
   },
   "Timor-Leste": {
+    countryName: "East Timor",
     countryISO2: "TL",
     continentISO2: "AS",
     continentName: "Asia"
   },
   "West Bank and Gaza": {
+    countryName: "Palestinian Territory",
     countryISO2: "PS",
     continentISO2: "AS",
     continentName: "Asia"
   },
   "Burma": {
+    countryName: "Myanmar",
     countryISO2: "MM",
     continentISO2: "AS",
     continentName: "Asia"
   },
   "MS Zaandam": {
+    countryName: null,
     countryISO2: null,
     continentISO2: null,
     continentName: "MS Zaandam"
   }
 }
+
+exports.Admin2Exclusions = ["Out of AK","Out of AZ","Out of AR","Out of CA","Out of CO","Out of CT","Out of DE","Out of AL","Out of DC","Out of FL","Out of GA","Out of HI","Out of ID","Out of IL","Out of IN","Out of IA","Out of KS","Out of KY","Out of LA","Out of ME","Out of MD","Out of MA","Out of MI","Out of MN","Out of MS","Out of MO","Out of MT","Out of NE","Out of NV","Out of NH","Out of NJ","Out of NM","Out of NY","Out of NC","Out of ND","Out of OH","Out of OK","Out of OR","Out of PA","Out of RI","Out of SC","Out of SD","Out of TN","Out of TX","Out of UT","Out of VT","Out of VA","Out of WA","Out of WV","Out of WI","Out of WY","Unassigned",""] // use with array.includes()
