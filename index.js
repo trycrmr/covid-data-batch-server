@@ -10,6 +10,15 @@ const globals = require('./globals');
 
 ( async() => {
   try {
+
+    const sortObj = obj => {
+      return Object.entries(obj).sort((a, b) => b[0].localeCompare(a[0])) // Honestly, not really sure how this returns an object and works, but it does, and it's straight from the docs ¯\_(ツ)_/¯ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+      .reduce((acc, curr, currIdx, origArr) => { // I added this reduce bit
+        let [key, value] = curr
+        acc[key] = value
+        return acc
+      }, {})
+    }
     const allData = []
     let jhuData = await stats.fetchJHUData()
 
@@ -20,6 +29,21 @@ const globals = require('./globals');
       }
       return newObj
     }
+
+    const convertAllKeysThatAreDatesToUnixTimestamps = (obj) => {
+      return Object.entries(obj).reduce((acc, curr, currIdx, origArr) => {
+        let [key, value] = curr
+        parsedKey = new Date(key)
+        parsedKey = parsedKey.setHours(12) // Add 12 hours. Each case only has the date it occurred. I'm presuming it's Eastern Time Zone, though, so add 12 hours in case there is an locale time zone adjustments when this key used as a timestamp in the browser or some situation like that and still reads the correct date. Not sure I have this right but it seems okay for now. 
+        if(parsedKey) {
+          acc[parsedKey] = value
+        } else {
+          console.info('oops', key)
+        }
+        return acc
+      }, {})
+    }
+
     jhuData = jhuData.map(thisJhu => thisJhu.data.map(thisRow => {
       thisRow.metric = thisJhu.name === 'confirmed_US' || thisJhu.name === 'confirmed_global' ? 'cases' : 'deaths'
       if(thisRow.iso2) return {
@@ -81,7 +105,7 @@ const globals = require('./globals');
           superRegions.push(superRegions[i].subregions[curr.location[i]])
         }
         if(i + 1 === curr.location.length) { // If this is the last location (i.e. the most granular location data we have), update the appropriate metric.
-          superRegions[i].subregions[curr.location[i]].totals.daily[curr.metric] = removeNonDateKeys(curr)
+          superRegions[i].subregions[curr.location[i]].totals.daily[curr.metric] = convertAllKeysThatAreDatesToUnixTimestamps(removeNonDateKeys(curr))
         }
         i++
       }
@@ -113,6 +137,71 @@ const globals = require('./globals');
       return match
     }
 
+    const calculatedDerivedMetrics = (casesObj, deathsObj, locationName) => { // Pass a case or death object. Presumed the structure is { "1/22/20": ##, "1/23/20": ##, ...  }
+      const calcChange = obj => {
+        return Object.entries(obj).reverse().reduce((acc, curr, currIdx, origArr) => {
+          // console.info(curr)
+          // let [key, value] = curr // key is the current index in the object that returns from the entries call. Or...it's something like that. Seems that way. 
+          let [countDate, count] = curr
+          // if(currIdx !== 0) console.info(origArr[currIdx - 1][1])
+          let yesterdaysCount = currIdx === 0 ? 0 : origArr[currIdx - 1][1] // Oof. This mess, origArr[currIdx - 1][1][1], is the previous day's count. Don't @ me.
+          yesterdaysCount = +(yesterdaysCount) || 0
+          let todaysCount = +(count) || 0
+          acc.change[countDate] = todaysCount - yesterdaysCount
+          acc.changePercent[countDate] = Number((acc.change[countDate] / todaysCount) * 100).toFixed(2)
+          return acc
+        }, { change: {}, changePercent: {}})
+      }
+
+      let casesResults = calcChange(casesObj)
+      let deathsResults = calcChange(deathsObj)
+
+      let caseChange = sortObj(casesResults.change)
+      // console.info(casesResults.change)
+      let caseChangePercent = sortObj(casesResults.changePercent)
+      let deathsChange = sortObj(deathsResults.change)
+      let deathsChangePercent = sortObj(deathsResults.changePercent)
+      let survivalRate = {} // returns the percentage chance of survival
+
+      try {
+        // ^ sortObj, then get entries, then map over that object to replace the values in the key value pairs with the current value - the previous value, then reduce to provide a new object with the same structure
+
+        //^ Same as daily change, except it's (curr - prev)/curr
+
+        if(Object.keys(casesObj).toString() === Object.keys(casesObj).toString(deathsObj) ) { // if they have the same keys
+          Object.keys(casesObj).forEach((thisKey, currIdx) => { // Just need the list of keys from one object to iterate with 
+            let [deathsDate, deathsCount] = [thisKey, deathsObj[thisKey]] // lazy
+            let [casesDate, casesCount] = [thisKey, casesObj[thisKey]] // lazy again :-) 
+            // if(currIdx === 0) console.info(deathsDate)
+            if(deathsDate !== casesDate) throw new Error('Case and death dates are different when calculating survival rate.')
+            let deathsToNum = +(deathsCount) || 0
+            let casesToNum = +(casesCount) || 0
+            let survivalRateCalc = +(deathsToNum / casesToNum) || 0 // another type conversion because 0/0 returns NaN
+            survivalRate[casesDate] = 100 - Number(survivalRateCalc * 100).toFixed(2) // Could use either date because they should be the same. An error would be thrown otherwise.
+            // console.info(deathsToNum, casesToNum, survivalRateCalc, survivalRate[thisKey])
+            // console.info(thisKey, survivalRateCalc, survivalRate[thisKey])
+          })
+        } else {
+          throw new Error(`${locationName} does not have matching case and death date keys.`)
+        }
+        //^ Check to see that the cases and deaths objects have the same number and type of keys (Object.keys & stringify & compare). Loop over one of the objects, generating a new object with newObj[key] = death[key] / casesObj[key]
+        return {
+          caseChange,
+          caseChangePercent,
+          deathsChange,
+          deathsChangePercent,
+          survivalRate
+        }
+      } catch(err) {
+        console.error(err)
+        return {
+          dailyChange,
+          dailyChangePercent,
+          survivalRate
+        }
+      }
+    }
+
     const calcAggs = async location => {
       if(location.rolledUp) return location
 //       console.debug(`
@@ -121,7 +210,8 @@ const globals = require('./globals');
 // ${!location.rolledUp} & ${Object.entries(location.subregions).every(([key, value]) => value.rolledUp)} (is not rolled up & subregions are rolled up)`)
 // ^Leaving in for debugging purposes
       if(!location.subregions) {
-        if(location.name === "Carroll, Arkansas") console.info(location.name, location.totals.daily.cases)
+        let derivedMetrics = calculatedDerivedMetrics(sortObj(location.totals.daily.cases), sortObj(location.totals.daily.deaths), location.name)
+        location.totals.daily = { ...location.totals.daily, ...derivedMetrics }
         location.rolledUp = true
         return location
       } else {
@@ -143,8 +233,14 @@ const globals = require('./globals');
         let subregionKeys = Object.keys(location.subregions)
         let i = 0
         while(i < subregionKeys.length) {
+          // location.subregions[subregionKeys[i]].totals.daily.cases = sortObj(location.subregions[subregionKeys[i]].totals.daily.cases)
+          // location.subregions[subregionKeys[i]].totals.daily.deaths = sortObj(location.subregions[subregionKeys[i]].totals.daily.deaths)
+          // console.info(location.subregions[subregionKeys[i]].name, location.subregions[subregionKeys[i]].totals.daily.survivalRate)
+          // let caseDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.cases)[0] === '1/22/20' ? Object.keys(location.subregions[subregionKeys[i]].totals.daily.cases) : Object.keys(location.subregions[subregionKeys[i]].totals.daily.cases).reverse()
+          // let deathDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.deaths)[0] === '1/22/20' ? Object.keys(location.subregions[subregionKeys[i]].totals.daily.deaths) : Object.keys(location.subregions[subregionKeys[i]].totals.daily.deaths).reverse()
           let caseDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.cases)
           let deathDatesLeft = Object.keys(location.subregions[subregionKeys[i]].totals.daily.deaths)
+          // console.info(caseDatesLeft[0], deathDatesLeft[0])
           while(caseDatesLeft.length > 0 || deathDatesLeft.length > 0) { // Get case and death totals
             let thisCasesKey = caseDatesLeft.pop()
             let thisDeathKey = deathDatesLeft.pop()
@@ -155,9 +251,14 @@ const globals = require('./globals');
               location.totals.daily.deaths[thisDeathKey] = sum(location.totals.daily.deaths[thisDeathKey], location.subregions[subregionKeys[i]].totals.daily.deaths[thisDeathKey]) 
             }
           }
+
           // Maybe iterate over cases and deaths here to calculate daily change and survival rate
           i++
         }
+        let derivedMetrics = calculatedDerivedMetrics(sortObj(location.totals.daily.cases), sortObj(location.totals.daily.deaths), location.name)
+        location.totals.daily = { ...location.totals.daily, ...derivedMetrics }
+        // Object.entries((location.totals.daily.cases)).forEach(([key, value] ) => {console.info(key)})
+        // console.info('')
         location.rolledUp = true
         return location
       }
