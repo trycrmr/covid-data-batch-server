@@ -19,7 +19,7 @@ const globals = require('./globals');
         return acc
       }, {})
     }
-    const allData = []
+
     let jhuData = await stats.fetchJHUData()
 
     const removeNonDateKeys = obj => {

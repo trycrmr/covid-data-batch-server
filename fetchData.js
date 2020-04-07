@@ -7,7 +7,9 @@ const coronatrackerScraper = require("./micro-scrapers/coronatracker");
 const jhucsseScraper = require("./micro-scrapers/jhucsse")
 const fs = require("fs");
 
-exports.fetchJHUData = async () => await jhucsseScraper.fetchData /* returns 
+exports.fetchJHUData = async () => { return await jhucsseScraper.fetchData() }
+
+/* returns 
 [
   {
     name: '-- name of the sheet as denoted in globals --', 
